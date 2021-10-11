@@ -3,12 +3,11 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import pandas as pd
+  
+page_baseUrl = "https://www.10000recipe.com/recipe/list.html?q=&query=&cat1="
+categoryNumList = ["6", "1", "7", "36","41", "42", "8", "10", "9", "38", "67", "39", "37","11"]
+#볶음 끓이기 부침 조림 무침 비빔 찜 절임 튀김 삶기 굽기 데치기 회 기타
 
-page_baseUrl = "https://www.10000recipe.com/recipe/list.html?cat4="
-categoryNumList = ["63", "56", "54", "55", "60", "53", "52", "61", "57", "58", "65", "64", "68", "66", "69", "59", "62"]
-categoryList = ["밑반찬", "메인반찬", "국/탕", "찌개", "디저트", "면/만두", "밥/죽/떡", "퓨전", "김치/젓갈/장류", "양념/소스/잼", "양식", "샐러드", "스프", "빵",
-                "과자", "차/음료/술", "기타"]
-pageNumList = [320, 220, 120, 50, 40, 70, 150, 6, 47, 22, 20, 20, 6, 82, 25, 20, 30]
 recipeId = 0
 
 global firstDf,secondDf,thirdDf
@@ -17,8 +16,10 @@ firstDf =  pd.DataFrame()
 secondDf =  pd.DataFrame()
 thirdDf =  pd.DataFrame()
 
-def RecipePageCrawler(recipeUrl, categoryIdx, rId):
+def RecipePageCrawler(recipeUrl, rId, category):
+    
     global firstDf,secondDf,thirdDf
+
     page = requests.get(recipeUrl)
     soup = BeautifulSoup(page.content, 'html.parser')
     recipe_title = []
@@ -38,7 +39,7 @@ def RecipePageCrawler(recipeUrl, categoryIdx, rId):
         res = soup.find('span', 'view2_summary_info3')  # 난이도
         difficult = res.getText()
         res = soup.find('div', 'ready_ingre3')
-        recipe_category.append(categoryList[categoryIdx])  # 카테고리 분류
+        recipe_category.append(category)  # 카테고리 분류
 
     except(AttributeError):
         return
@@ -101,32 +102,32 @@ def RecipePageCrawler(recipeUrl, categoryIdx, rId):
 
     recipe_all = [rId, recipe_title, serving, cookingTime, difficult, recipe_source, recipe_step, menu_img,
                   recipe_category]
-
-    print(recipe_all, '\n\n')
-    print(user_grade)
+    print(rId, recipe_title, recipe_category)
+#     print(recipe_all, '\n\n')
+#     print(user_grade)
     first,second,third = getDataFrame(recipe_all,user_grade)
-
+    
     firstDf = firstDf.append(first)
     secondDf = secondDf.append(second)
     thirdDf = thirdDf.append(third)
 
-def CategoryPageCrawler(category_num, categoryIdx):
+def RotateRecipe(url, page, soup,category):
     global recipeId
-    Url = page_baseUrl + category_num + "&order=reco&page="
-
-    for i in range(1, pageNumList[categoryIdx] + 1):
-        pageUrl = Url + str(i)
-        page = requests.get(pageUrl)
-        soup = BeautifulSoup(page.content, 'html.parser')
-
+    i = 0
+    while True:
         try:
+            i = i+1
+            numPageurl = url + "&order=reco&page=" + str(i) 
+            page = requests.get(numPageurl)
+            soup = BeautifulSoup(page.content, 'html.parser')
             for href in soup.find("ul", class_="common_sp_list_ul ea4").find_all("li"):
                 recipeUrl = "https://www.10000recipe.com" + href.find("a")["href"]
                 recipeId = recipeId + 1
-                RecipePageCrawler(recipeUrl, categoryIdx, recipeId)
-                # print("\n\n\n")
-        except(AttributeError):
-            return
+                RecipePageCrawler(recipeUrl,recipeId, category)
+#                 print("\n\n\n")
+        except (AttributeError):
+            break
+    
 
 def getDataFrame(recipe_all, user_grade):
     # 1st
@@ -154,14 +155,48 @@ def getDataFrame(recipe_all, user_grade):
         data['created_day'].append(created_day)
     third = pd.DataFrame(data=data)
 
-    return first, second, third
+    return first, second, third    
+    
+def CategoryPageCrawler(category_num):
+    pageUrl = page_baseUrl + category_num + "&cat2=&cat3=&cat4=&fct=&order=reco&lastcate=cat1&dsearch=&copyshot=&scrap=&degree=&portion=&time=&niresource="
+    page = requests.get(pageUrl)
+    soup = BeautifulSoup(page.content, 'html.parser')
 
-i = 0
+    try:
+        for href in soup.find("ul", class_="tag_cont").find_all("li"):
+            pageUrl1 = "https://www.10000recipe.com/" + href.find("a")["href"]
+            page = requests.get(pageUrl1)
+            soup = BeautifulSoup(page.content, 'html.parser')
+            res = soup.find("ul", class_="tag_cont").find_all("li")
+            category = href.getText()
+            if not res:
+                RotateRecipe(pageUrl1, page, soup, category)
+            else:
+                for href in res:
+                    pageUrl2 = "https://www.10000recipe.com/" + href.find("a")["href"]
+                    page = requests.get(pageUrl2)
+                    soup = BeautifulSoup(page.content, 'html.parser')
+                    res = soup.find("ul", class_="tag_cont").find_all("li")
+                    category = href.getText()
+                    if not res:
+                        RotateRecipe(pageUrl2, page, soup, category)
+                    else:
+                        for href in res:
+                            category = href.getText()
+                            pageUrl3 = "https://www.10000recipe.com/" + href.find("a")["href"]
+                            page = requests.get(pageUrl3)
+                            soup = BeautifulSoup(page.content, 'html.parser')
+                            RotateRecipe(pageUrl3, page, soup, category)
+
+                                
+
+    except(AttributeError):
+        return
+
+
 for category_num in categoryNumList:
-    CategoryPageCrawler(category_num, i)
-    i = i + 1
-
-
+    CategoryPageCrawler(category_num)
+    
 firstDf.to_csv("first.csv", encoding='utf-8-sig')
 secondDf.to_csv("second.csv", encoding='utf-8-sig')
 thirdDf.to_csv("third.csv", encoding='utf-8-sig')
