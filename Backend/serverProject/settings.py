@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'serverProject'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True #서비스 시작되면 False로 바꾸기
