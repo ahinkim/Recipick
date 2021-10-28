@@ -54,8 +54,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'serverProject'
+    'serverProject',
+
+    # 'rest_framework.authtoken', 
+    # 'django.contrib.sites', 
+    # 'allauth', 'allauth.account', 
+    # 'rest_auth.registration',
 ]
+
+REST_FRAMEWORK = { # 권한 설정
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 CORS_ORIGIN_ALLOW_ALL = True #서비스 시작되면 False로 바꾸기
 CORS_ALLOW_CREDENTIALS = True
@@ -156,7 +167,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'ko-kr'
+LANGUAGE_CODE = 'en-gb'
 
 TIME_ZONE = 'Asia/Seoul'
 
