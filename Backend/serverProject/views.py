@@ -25,9 +25,12 @@ def get_secret(setting, secrets=secrets):
 #회원가입(POST)
 @csrf_exempt
 def user_list(request):
+    search_userId = request.META['HTTP_USERID']
+    password = request.META['HTTP_PASSWORD']
+    data = {"userId":search_userId, "password":password}
     if request.method == 'POST':
-        data = JSONParser().parse(request)
         serializer = UserSerializer(data=data)
+        print("!!!!!!!")
         if serializer.is_valid():
             serializer.save()
             return JsonResponse({'message': 'SUCCESS'}, status=200)
@@ -63,20 +66,20 @@ def userValidate(request):
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
-        data = JSONParser().parse(request)
-        search_userId = data['userId']
+        search_userId = request.META['HTTP_USERID']
+        password = request.META['HTTP_PASSWORD']
         if User.objects.filter(userId=search_userId).exists(): #아이디는 존재
             obj = User.objects.get(userId=search_userId)
             
-            if data['password'] == obj.password: #비밀번호 일치
+            if password == obj.password: #비밀번호 일치
                 secret = get_secret("SECRET_KEY")
                 #weeks=2로 바꾸기
-                access = jwt.encode({"exp": datetime.datetime.now(timezone('UTC')) + datetime.timedelta(seconds=60),"userId": data['userId']}, secret, algorithm="HS256")
+                access = jwt.encode({"exp": datetime.datetime.now(timezone('UTC')) + datetime.timedelta(seconds=60),"userId": search_userId}, secret, algorithm="HS256")
                 obj.accessToken = access
                 obj.save()
 
                 return JsonResponse({"accessToken": access.decode('utf-8')},status=200)
-            
+
             else:  #비밀번호 불일치
                 return JsonResponse({'message': 'FALSE'}, status=401)
         else: #없는 아이디인 경우
@@ -87,20 +90,21 @@ def login(request):
 @csrf_exempt
 def reissuanceAtk(request):
     if request.method == 'GET':
-
         data = request.META['HTTP_ACCESSTOKEN']
+
         try:
             access = data.encode('utf-8') 
             secret = get_secret("SECRET_KEY")
-            jwt.decode(data, secret, algorithm="HS256")
+            jwt.decode(data, secret, algorithm="HS256") #이거 없으면 에러처리 안된다.
 
             try:
                 #만료기간이 지나지 않고 accessToken도 일치하는 경우
                 obj = User.objects.get(accessToken = access)
-                secret = get_secret("SECRET_KEY") ###########
-                print(jwt.decode(access, secret, algorithm="HS256")) #############
-                
+                secret = get_secret("SECRET_KEY") 
+                print(jwt.decode(access, secret, algorithm="HS256")) 
+ 
                 return JsonResponse({"message": "NOT_EXPIRED_TOKEN"},status=200)
+
             except:
                 #만료기간은 지나지 않았지만 accessToken은 일치하지 않은 경우
                 return JsonResponse({"message": "MISMATCHED_TOKEN"},status=419)
@@ -115,7 +119,8 @@ def reissuanceAtk(request):
                 access = jwt.encode({"exp": datetime.datetime.now(timezone('UTC')) + datetime.timedelta(seconds=60),"userId": userId}, secret, algorithm="HS256")
                 obj.accessToken = access
                 obj.save()
-                return JsonResponse({"accessToken": access.decode('utf-8')}, status = 412)
+                
+                return JsonResponse({"accessToken": access.decode('utf-8')},status=412)
 
             except:
                 #access token이랑 일치하지도 않고 만료기간이 지난 경우
