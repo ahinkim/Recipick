@@ -21,10 +21,21 @@ def get_secret(setting, secrets=secrets):
         error_msg = f"Set the {setting} enviroment variable"
         raise ImproperlyConfigured(error_msg)
 
-#계정 중복 확인(GET), 회원가입(POST)
+#회원가입(POST)
 @csrf_exempt
 def user_list(request):
-    if request.method == 'GET':
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = UserSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({'message': 'SUCCESS'}, status=200)
+        return JsonResponse(serializer.errors, status=401)
+
+#계정 중복 확인(POST)
+@csrf_exempt
+def userValidate(request):
+    if request.method == 'POST':
         data = JSONParser().parse(request)
         search_userId = data['userId']
 
@@ -33,14 +44,6 @@ def user_list(request):
             return JsonResponse({'message': 'FALSE'}, status=401)
         else: #중복이 아닌 경우
             return JsonResponse({'message': 'SUCCESS'}, status=200)
-
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = UserSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse({'message': 'SUCCESS'}, status=200)
-        return JsonResponse(serializer.errors, status=401)
 
 
 #accessToken으로 특정 계정 삭제(DELETE)
@@ -68,8 +71,11 @@ def login(request):
                 secret = get_secret("SECRET_KEY")
                 #weeks=2로 바꾸기
                 access = jwt.encode({"exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=300),"userId": data['userId']}, secret, algorithm="HS256")
+                obj.accessToken = access
+                obj.save()
 
                 return JsonResponse({"accessToken": access.decode('utf-8')},status=200)
+            
             else:  #비밀번호 불일치
                 return JsonResponse({'message': 'FALSE'}, status=401)
         else: #없는 아이디인 경우
@@ -88,3 +94,19 @@ def issueAtk(request):
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=400)
+
+
+#회원 탙퇴
+@csrf_exempt
+def userSecession(request):
+    if request.method == 'DELETE':
+        data = request.META['HTTP_ACCESSTOKEN']
+        access = data.encode('utf-8')
+        try:
+            obj = User.objects.get(accessToken = access)
+            obj.delete()
+            return JsonResponse({"message": "SUCCESS"},status=200)
+
+        except: 
+            return JsonResponse({"message": "FALSE"},status=401)
+        
