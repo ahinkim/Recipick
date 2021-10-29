@@ -7,6 +7,7 @@ from rest_framework.parsers import JSONParser
 
 import jwt
 import datetime
+from pytz import timezone
 
 import json
 from django.core.exceptions import ImproperlyConfigured
@@ -70,7 +71,7 @@ def login(request):
             if data['password'] == obj.password: #비밀번호 일치
                 secret = get_secret("SECRET_KEY")
                 #weeks=2로 바꾸기
-                access = jwt.encode({"exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=300),"userId": data['userId']}, secret, algorithm="HS256")
+                access = jwt.encode({"exp": datetime.datetime.now(timezone('UTC')) + datetime.timedelta(seconds=60),"userId": data['userId']}, secret, algorithm="HS256")
                 obj.accessToken = access
                 obj.save()
 
@@ -84,17 +85,45 @@ def login(request):
 
 #accessToken 발급
 @csrf_exempt
-def issueAtk(request):
-    if request.method == 'POST':
-        data = JSONParser().parse(request)
-        search_userId = data['userId']
-        obj = User.objects.get(userId=search_userId)
+def reissuanceAtk(request):
+    if request.method == 'GET':
 
-        if data['password'] == obj.password:
-            return HttpResponse(status=200)
-        else:
-            return HttpResponse(status=400)
+        data = request.META['HTTP_ACCESSTOKEN']
+        try:
+            access = data.encode('utf-8') 
+            secret = get_secret("SECRET_KEY")
+            jwt.decode(data, secret, algorithm="HS256")
 
+            try:
+                #만료기간이 지나지 않고 accessToken도 일치하는 경우
+                obj = User.objects.get(accessToken = access)
+                secret = get_secret("SECRET_KEY") ###########
+                print(jwt.decode(access, secret, algorithm="HS256")) #############
+                
+                return JsonResponse({"message": "NOT_EXPIRED_TOKEN"},status=200)
+            except:
+                #만료기간은 지나지 않았지만 accessToken은 일치하지 않은 경우
+                return JsonResponse({"message": "MISMATCHED_TOKEN"},status=419)
+
+        except jwt.ExpiredSignatureError:
+            try:
+                #access token이랑 일치하지만 만료기간이 지난 경우
+                obj = User.objects.get(accessToken = access)
+                userId = obj.userId
+                secret = get_secret("SECRET_KEY")
+                #weeks=2로 바꾸기
+                access = jwt.encode({"exp": datetime.datetime.now(timezone('UTC')) + datetime.timedelta(seconds=60),"userId": userId}, secret, algorithm="HS256")
+                obj.accessToken = access
+                obj.save()
+                return JsonResponse({"accessToken": access.decode('utf-8')}, status = 412)
+
+            except:
+                #access token이랑 일치하지도 않고 만료기간이 지난 경우
+                return JsonResponse({"message": "MISMATCHED_TOKEN"},status=419)
+        
+        except jwt.InvalidTokenError:
+            #유효하지 않은 token 형태인 경우
+            return JsonResponse({"message": "INVALID_TOKEN"},status=420)
 
 #회원 탙퇴
 @csrf_exempt
