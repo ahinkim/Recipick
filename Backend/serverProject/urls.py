@@ -1,14 +1,15 @@
 from django.contrib import admin
 from django.urls import path
-from . import views
+from .views import userViews
 from django.conf.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users', views.user_list),
-    path('userValidate', views.userValidate),
-    path('userSecession', views.userSecession),
-    path('reissuanceAtk', views.reissuanceAtk),
-    path('login', views.login),
+    path('users', userViews.user_list),
+    path('users/validate', userViews.userValidate),
+    path('users/secession', userViews.userSecession),
+    path('users/login', userViews.login),
+    path('users/access', userViews.access),
+    path('users/reissuance', userViews.reissuance),
     path('auth', include('rest_framework.urls', namespace='rest_framework'))
 ]

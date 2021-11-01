@@ -4,6 +4,7 @@ from django.db import models
 class User(models.Model): #User Table
     userId = models.CharField(max_length=100, primary_key=True)
     accessToken = models.CharField(max_length=200, blank=True, null=True)
+    refreshToken = models.CharField(max_length=200, blank=True, null=True)
     password = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
