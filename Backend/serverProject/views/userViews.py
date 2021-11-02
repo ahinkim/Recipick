@@ -1,4 +1,4 @@
-from os import access
+# from os import access
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from ..models import User
@@ -49,17 +49,6 @@ def userValidate(request):
             return JsonResponse({'message': 'SUCCESS'}, status=200)
 
 
-#accessToken으로 특정 계정 삭제(DELETE)
-#나중에 특정 유저 조회, 수정 만들고 싶으면 여기다 추가
-# @csrf_exempt
-# def user(request):
-    
-#     obj = User.objects.get(pk=pk)
-
-#     if request.method == 'DELETE':
-#         obj.delete()
-#         return HttpResponse(status=204)
-#     if access.decode('utf-8') == access.decode('utf-8'): -->user 비교할 때 꼭 이렇게 비교하기
 
 #login - 로그인(POST)
 @csrf_exempt
@@ -72,8 +61,8 @@ def login(request):
             
             if password == obj.password: #비밀번호 일치
                 secret = get_secret("SECRET_KEY")
-                #hours=1, weeks=3로 바꾸기
-                access = jwt.encode({"exp": datetime.datetime.now(timezone('UTC')) + datetime.timedelta(seconds=60),"userId": search_userId}, secret, algorithm="HS256")
+        
+                access = jwt.encode({"exp": datetime.datetime.now(timezone('UTC')) + datetime.timedelta(weeks=2),"userId": search_userId}, secret, algorithm="HS256")
                 refresh = jwt.encode({"userId": search_userId}, secret, algorithm="HS256")
                 obj.accessToken = access
                 obj.refreshToken = refresh
@@ -143,8 +132,8 @@ def reissuance(request):
                 obj = User.objects.get(accessToken = access, refreshToken = refresh)
                 userId = obj.userId
                 # secret = get_secret("SECRET_KEY")
-                #weeks=2로 바꾸기
-                access = jwt.encode({"exp": datetime.datetime.now(timezone('UTC')) + datetime.timedelta(seconds=60),"userId": userId}, secret, algorithm="HS256")
+
+                access = jwt.encode({"exp": datetime.datetime.now(timezone('UTC')) + datetime.timedelta(weeks=2),"userId": userId}, secret, algorithm="HS256")
                 obj.accessToken = access
                 obj.save()
  

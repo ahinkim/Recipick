@@ -63,6 +63,7 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = { # 권한 설정
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]

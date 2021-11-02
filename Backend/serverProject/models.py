@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 
 class User(models.Model): #User Table
     userId = models.CharField(max_length=100, primary_key=True)
@@ -11,6 +11,7 @@ class User(models.Model): #User Table
     # updated_at = models.DateTimeField(auto_now_add=True)
     
 class R_info(models.Model): #Recipe information Table
+    # rId = models.IntegerField(primary_key=True)
     rId = models.IntegerField(primary_key=True)
     recipe_title = models.CharField(max_length=100)
     serving = models.CharField(max_length=20)
@@ -36,3 +37,12 @@ class R_grade(models.Model): #Recipe grade Table
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # updated_at = models.DateTimeField(auto_now_add=True)
+
+class main_defaultRecipe(models.Model): #실제 데이터 넣기 전에 이름 MainDefault로 바꾸기
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'mainRecipe')
+
+class ranking_defaultRecipe(models.Model): #이름 RankingDefault로 바꾸기
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'rankingRecipe')
+    rank = models.IntegerField(auto_created=True, null=False)
+
+
