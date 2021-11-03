@@ -2,8 +2,10 @@
 from rest_framework import serializers
 from .models import User
 from .models import R_info
-from .models import main_defaultRecipe
-from .models import ranking_defaultRecipe
+from .models import MainDefault
+from .models import RankingDefault
+from .models import WishList
+from .models import UserRecipeList
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,7 +19,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
 class MainDefaultSerializer(serializers.ModelSerializer):
     class Meta:
-        model = main_defaultRecipe
+        model = MainDefault
         fields = ['rId']
         
     def to_representation(self, instance):
@@ -26,9 +28,14 @@ class MainDefaultSerializer(serializers.ModelSerializer):
 
 class RankingDefaultSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ranking_defaultRecipe
+        model = RankingDefault
         fields = ['rank','rId']
         
     def to_representation(self, instance):
         self.fields['rId'] =  RecipeSerializer(read_only=True)
         return super(RankingDefaultSerializer, self).to_representation(instance)
+
+class UserRListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WishList
+        fields = ['id','userId', 'rId']

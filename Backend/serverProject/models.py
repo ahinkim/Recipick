@@ -31,18 +31,26 @@ class R_order(models.Model): #Recipe Order Table
     updated_at = models.DateTimeField(auto_now=True)
 
 class R_grade(models.Model): #Recipe grade Table
-    userId  = models.ForeignKey('User', on_delete=models.CASCADE)
+    userId = models.ForeignKey('User', on_delete=models.CASCADE)
     rId = models.ForeignKey('R_info', on_delete=models.CASCADE)
     grade = models.IntegerField()
+    comment = models.TextField(null=True)  #평점 길이제한 x
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # updated_at = models.DateTimeField(auto_now_add=True)
 
-class main_defaultRecipe(models.Model): #실제 데이터 넣기 전에 이름 MainDefault로 바꾸기
+class MainDefault(models.Model):
     rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'mainRecipe')
 
-class ranking_defaultRecipe(models.Model): #이름 RankingDefault로 바꾸기
+class RankingDefault(models.Model): 
     rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'rankingRecipe')
     rank = models.IntegerField(auto_created=True, null=False)
 
+class WishList(models.Model):
+    userId = models.ForeignKey('User', on_delete=models.CASCADE)
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE)
+
+class UserRecipeList(models.Model): #사용자가 등록한 레시피 리스트
+    userId = models.ForeignKey('User', on_delete=models.CASCADE)
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE)
 
