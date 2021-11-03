@@ -11,8 +11,6 @@ from rest_framework.parsers import JSONParser
 # import jwt
 # import datetime
 
-from pprint import pprint##############
-
 #main페이지의 default레시피들 조회
 @csrf_exempt
 def main_list(request):
@@ -31,7 +29,6 @@ def ranking_list(request):
         try:
             query_set = ranking_defaultRecipe.objects.all()
             serializer = RankingDefaultSerializer(query_set, many=True)
-            print(serializer,"!!!!!!!!!")
             return JsonResponse(serializer.data, safe=False, status=200)
         except:
             return JsonResponse({"message":"SERVER ERROR"}, status=500)
