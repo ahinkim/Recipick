@@ -38,4 +38,4 @@ class RankingDefaultSerializer(serializers.ModelSerializer):
 class UserRListSerializer(serializers.ModelSerializer):
     class Meta:
         model = WishList
-        fields = ['id','userId', 'rId']
+        fields = ['userId', 'rId']

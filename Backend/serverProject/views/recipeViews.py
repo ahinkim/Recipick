@@ -55,12 +55,20 @@ def wishlist(request):
     try:
         access_data = request.META['HTTP_ACCESSTOKEN']
         access = access_data.encode('utf-8')
-        rId = request.GET['rId']
         obj = User.objects.get(accessToken=access)
         userId = obj.userId
-        data = {"rId": rId, "userId": userId}
-    
-        if request.method == 'POST':
+
+        if request.method == 'GET':
+            try:
+                query_set = WishList.objects.filter(userId=userId).all()
+                serializer = UserRListSerializer(query_set, many=True)
+                return JsonResponse({"wish_list": serializer.data}, safe=False, status=200)
+            except:
+                return JsonResponse({"message":"No wishlist for user"}, status=401)
+
+        elif request.method == 'POST':
+            rId = request.GET['rId']
+            data = {"rId": rId, "userId": userId}
             if WishList.objects.filter(userId=userId, rId=rId).exists():
                 return JsonResponse({"message":"Recipe already added to wishlist"}, safe=False, status=401)
             else:    
@@ -72,6 +80,8 @@ def wishlist(request):
                 return JsonResponse(serializer.errors, status=404)
         
         elif request.method == 'DELETE':
+            rId = request.GET['rId']
+            data = {"rId": rId, "userId": userId}
             try:
                 obj = WishList.objects.get(userId=userId, rId=rId)
                 obj.delete()
@@ -81,5 +91,3 @@ def wishlist(request):
 
     except:
         return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN"}, status=411)
-
-    
