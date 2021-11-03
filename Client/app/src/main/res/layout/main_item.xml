@@ -35,7 +35,7 @@
                 android:text="옥수수가 톡톡 콘치즈 김치볶음밥 만들기"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:fontFamily="@font/gmarket_sans_bold"
+                android:fontFamily="@font/recipekorea"
                 android:textColor="#F8EDEB"
                 android:textSize="20sp"
 

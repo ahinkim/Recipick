@@ -27,9 +27,9 @@
             android:layout_margin="5dp"
             android:gravity="center"
             android:text="옥수수가 톡톡 콘치즈 김치볶음밥 만들기"
-            android:fontFamily="@font/gmarket_sans_medium"
+            android:fontFamily="@font/recipekorea"
             android:textColor="#000000"
-            android:textSize="30sp" />
+            android:textSize="28sp" />
 
         <View
             android:id="@+id/view"
@@ -41,38 +41,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:weightSum="3"
         >
 
         <TextView
             android:id="@+id/recipePeople"
-            android:layout_width="125dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:gravity="center"
+            android:layout_weight="1"
+
             android:text="1인분"
-            android:fontFamily="@font/gmarket_sans_medium"
+            android:fontFamily="@font/dangdanghae"
             android:textColor="#000000"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/recipeMinute"
-            android:layout_width="125dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:gravity="center"
+            android:layout_weight="1"
+
             android:text="30분"
-            android:fontFamily="@font/gmarket_sans_medium"
+            android:fontFamily="@font/dangdanghae"
             android:textColor="#000000"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/recipeDifficulty"
-            android:layout_width="125dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="초급"
+            android:layout_weight="1"
+
             android:gravity="center"
-            android:fontFamily="@font/gmarket_sans_medium"
+            android:fontFamily="@font/dangdanghae"
             android:textColor="#000000"
             android:textSize="20sp" />
 

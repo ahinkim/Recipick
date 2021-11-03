@@ -15,4 +15,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <style name="BottomNavigationViewTextStyle">
+        <item name="android:fontFamily">@font/ssurround_air</item>
+    </style>
 </resources>

@@ -17,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -29,10 +30,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private SharedPreferences preferences;
     private EditText join_id, join_password, join_pwck;
     private Button join_button, check_button;
     private AlertDialog dialog;
@@ -54,12 +57,17 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                String id = join_id.getText().toString();
+                String userId = join_id.getText().toString();
+
+                //헤더에 아이디 넣기
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("userId", userId);
+
                 if (validate) {
                     return; //검증 완료
                 }
 
-                if (id.equals("")) {
+                if (userId.equals("")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                     dialog = builder.setMessage("아이디를 입력하세요.").setPositiveButton("확인", null).create();
                     dialog.show();
@@ -67,12 +75,12 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 //POST 요청
-                String url = "http://81a0-182-222-218-49.ngrok.io/userValidate";
+                String url = "http://2a7a-182-222-218-49.ngrok.io/users/validate";
                 RequestQueue requestQueue = Volley.newRequestQueue(RegisterActivity.this);
 
                 JSONObject postData = new JSONObject();
                 try {
-                    postData.put("userId", id);
+                    postData.put("userId", userId);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -101,7 +109,6 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
                 requestQueue.add(jsonObjectRequest);
-
             }
         });
 
@@ -113,6 +120,11 @@ public class RegisterActivity extends AppCompatActivity {
                 final String userId = join_id.getText().toString();
                 final String password = join_password.getText().toString();
                 final String PassCk = join_pwck.getText().toString();
+
+                //헤더에 아이디 넣기
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("userId", userId);
+                headers.put("password",password);
 
                 //아이디 중복체크 했는지 확인
                 if (!validate) {
@@ -138,15 +150,15 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                //Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                //startActivity(intent);
-
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                         dialog = builder.setMessage("회원가입이 완료되었습니다.").setNegativeButton("확인", null).create();
                         dialog.show();
+
+                        Intent intent = new Intent( RegisterActivity.this, LoginActivity.class );
+                        startActivity( intent );
                     }
 
                 };
@@ -160,25 +172,18 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                         else if(networkResponse.statusCode==400){
                             //요청 형태 잘못됨
-                            Log.d("statuscode1",""+networkResponse.statusCode);
+                            Log.d("statuscode",""+networkResponse.statusCode);
                         }
                         else{
-                            //알 수 없는 문제
-                            Log.d("statuscode2",""+networkResponse.statusCode);
+                            //서버 문제
+                            Log.d("statuscode",""+networkResponse.statusCode);
                         }
                     }
                 };
-                try {
-                    JSONObject sObject = new JSONObject();//배열 내에 들어갈 json
-                    sObject.put("userId", userId);
-                }catch(JSONException e){
-                    e.printStackTrace();
-                }
-
                 //서버로 Volley를 이용해서 요청
-                //RegisterRequest registerRequest = new RegisterRequest( sObject, password, responseListener,errorListener);
+                RegisterRequest registerRequest = new RegisterRequest( headers, responseListener,errorListener);
                 RequestQueue queue = Volley.newRequestQueue( RegisterActivity.this );
-                //queue.add( registerRequest );
+                queue.add( registerRequest );
             }
         });
     }
