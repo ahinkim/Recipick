@@ -1,12 +1,13 @@
 # from os import access
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from ..models import MainDefault
+from ..models import MainDefault, UserRecipeList
 from ..models import RankingDefault
 from ..models import R_info
 from ..models import User
 from ..models import WishList
 from ..models import R_grade
+from ..models import R_order
 
 from ..serializers import RecipeSerializer
 from ..serializers import MainDefaultSerializer
@@ -14,6 +15,7 @@ from ..serializers import RankingDefaultSerializer
 from ..serializers import userWishListSerializer
 from ..serializers import UserGradeSerializer
 from ..serializers import UserRecipeListSerializer
+from ..serializers import R_OrderSerializer
 
 from rest_framework.parsers import JSONParser
 
@@ -50,7 +52,7 @@ def recipe(request):
             rId = request.GET['rId']
             query_set = R_info.objects.filter(rId=rId)
             serializer = RecipeSerializer(query_set, many=True)
-            return JsonResponse(serializer.data, safe=False, status=200)
+            return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
         except:
             return JsonResponse({"message":"SERVER ERROR"}, status=500)
  
@@ -87,22 +89,6 @@ def recipe(request):
                 return JsonResponse({"message":"SUCCESS"}, safe=False, status=200)
             except:
                 return JsonResponse({"message":"No recipe to delete"}, status=421)
-
-        # elif request.method == 'PUT':
-        #     data = JSONParser().parse(request)
-        #     id = request.GET['id']
-        #     grade = data['grade']
-        #     comment = data['comment']
-
-        #     try:
-        #         obj = R_grade.objects.get(id=id)
-        #         obj.grade = grade
-        #         obj.comment = comment
-        #         obj.save()
-
-        #         return JsonResponse({"message":"SUCCESS"}, safe=False, status=200)
-        #     except:
-        #         return JsonResponse({"message":"No grade to update"}, status=421)
             
     except:
         return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN"}, status=411)
@@ -214,3 +200,32 @@ def userRGrade(request):
         return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN"}, status=411)
 
 
+@csrf_exempt
+def userRecipeList(request):
+    try:
+        access_data = request.META['HTTP_ACCESSTOKEN']
+        access = access_data.encode('utf-8')
+        obj = User.objects.get(accessToken=access)
+        userId = obj.userId
+
+        if request.method == 'GET':
+            try:
+                query_set = UserRecipeList.objects.filter(userId=userId).all()
+                serializer = UserRecipeListSerializer(query_set, many=True)
+                return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
+            except:
+                return JsonResponse({"message":"No wishlist for user"}, status=401)
+    
+    except:
+        return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN"}, status=411)
+
+@csrf_exempt
+def recipeOrder(request):
+    if request.method == 'GET':
+        try:
+            rId = request.GET['rId']
+            query_set = R_order.objects.filter(rId=rId).all()
+            serializer = R_OrderSerializer(query_set, many=True)
+            return JsonResponse({"r_order": serializer.data}, safe=False, status=200)
+        except:
+            return JsonResponse({"message":"Recipe for rId does not exist"}, status=421)

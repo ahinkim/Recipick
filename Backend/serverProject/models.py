@@ -39,10 +39,10 @@ class R_grade(models.Model): #Recipe grade Table
     # updated_at = models.DateTimeField(auto_now_add=True)
 
 class MainDefault(models.Model):
-    rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'mainRecipe')
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'mainRecipes')
 
 class RankingDefault(models.Model): 
-    rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'rankingRecipe')
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'rankingRecipes')
     rank = models.IntegerField(auto_created=True, null=False)
 
 class WishList(models.Model):
@@ -50,6 +50,6 @@ class WishList(models.Model):
     rId = models.ForeignKey('R_info', on_delete=models.CASCADE)
 
 class UserRecipeList(models.Model): #사용자가 등록한 레시피 리스트
-    userId = models.ForeignKey('User', on_delete=models.CASCADE)
-    rId = models.ForeignKey('R_info', on_delete=models.CASCADE)
+    userId = models.ForeignKey('User', on_delete=models.CASCADE, related_name = 'users')
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'userRecipes')
 
