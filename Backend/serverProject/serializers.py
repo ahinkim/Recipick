@@ -5,6 +5,7 @@ from .models import R_info
 from .models import MainDefault
 from .models import RankingDefault
 from .models import WishList
+from .models import R_grade
 from .models import UserRecipeList
 
 class UserSerializer(serializers.ModelSerializer):
@@ -35,7 +36,18 @@ class RankingDefaultSerializer(serializers.ModelSerializer):
         self.fields['rId'] =  RecipeSerializer(read_only=True)
         return super(RankingDefaultSerializer, self).to_representation(instance)
 
-class UserRListSerializer(serializers.ModelSerializer):
+class userWishListSerializer(serializers.ModelSerializer):
     class Meta:
         model = WishList
+        fields = ['userId', 'rId']
+
+class UserGradeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = R_grade
+        fields = ['id', 'userId', 'rId', 'grade', 'comment']
+
+
+class UserRecipeListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRecipeList
         fields = ['userId', 'rId']

@@ -18,6 +18,7 @@ urlpatterns = [
 
     path('recipe/', recipeViews.get_recipe),
     path('recipe/wishlist/', recipeViews.wishlist),
+    path('recipe/usergrade/', recipeViews.UserRGrade),
 
     path('auth', include('rest_framework.urls', namespace='rest_framework'))
 ]

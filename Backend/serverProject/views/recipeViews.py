@@ -6,10 +6,15 @@ from ..models import RankingDefault
 from ..models import R_info
 from ..models import User
 from ..models import WishList
+from ..models import R_grade
+
 from ..serializers import RecipeSerializer
 from ..serializers import MainDefaultSerializer
 from ..serializers import RankingDefaultSerializer
-from ..serializers import UserRListSerializer
+from ..serializers import userWishListSerializer
+from ..serializers import UserGradeSerializer
+from ..serializers import UserRecipeListSerializer
+
 from rest_framework.parsers import JSONParser
 
 import jwt
@@ -61,7 +66,7 @@ def wishlist(request):
         if request.method == 'GET':
             try:
                 query_set = WishList.objects.filter(userId=userId).all()
-                serializer = UserRListSerializer(query_set, many=True)
+                serializer = userWishListSerializer(query_set, many=True)
                 return JsonResponse({"wish_list": serializer.data}, safe=False, status=200)
             except:
                 return JsonResponse({"message":"No wishlist for user"}, status=401)
@@ -72,7 +77,7 @@ def wishlist(request):
             if WishList.objects.filter(userId=userId, rId=rId).exists():
                 return JsonResponse({"message":"Recipe already added to wishlist"}, safe=False, status=401)
             else:    
-                serializer = UserRListSerializer(data=data)
+                serializer = userWishListSerializer(data=data)
                 if serializer.is_valid():
                     serializer.save()
                     return JsonResponse({"message":"SUCCESS"}, safe=False, status=200)
@@ -88,6 +93,70 @@ def wishlist(request):
                 return JsonResponse({"message":"SUCCESS"}, safe=False, status=200)
             except:
                 return JsonResponse({"message":"No recipes to delete"}, status=421)
+
+    except:
+        return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN"}, status=411)
+
+
+@csrf_exempt
+def UserRGrade(request):
+    if request.method == 'GET':
+        try:
+            rId = request.GET['rId']
+            query_set = R_grade.objects.filter(rId=rId).all()
+            serializer = UserGradeSerializer(query_set, many=True)
+            return JsonResponse({"grade_list": serializer.data}, safe=False, status=200)
+        except:
+            return JsonResponse({"message":"No grade for Recipe"}, status=401)
+        
+    try:
+        access_data = request.META['HTTP_ACCESSTOKEN']
+        access = access_data.encode('utf-8')
+        obj = User.objects.get(accessToken=access)
+        userId = obj.userId
+
+        if request.method == 'POST':
+            data = JSONParser().parse(request)
+            rId = request.GET['rId']
+            grade = data['grade']
+            comment = data['comment']
+
+            data = {"rId": rId, "userId": userId, "grade":grade, "comment": comment}
+            if R_grade.objects.filter(userId=userId, rId=rId).exists():
+                return JsonResponse({"message":"Rating already exists for recipe"}, safe=False, status=401)
+            else:    
+                serializer = UserGradeSerializer(data=data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return JsonResponse({"message":"SUCCESS"}, safe=False, status=200)
+
+                return JsonResponse(serializer.errors, status=404)
+        
+        elif request.method == 'DELETE':
+            id = request.GET['id']
+
+            try:
+                obj = R_grade.objects.get(id=id)
+                obj.delete()
+                return JsonResponse({"message":"SUCCESS"}, safe=False, status=200)
+            except:
+                return JsonResponse({"message":"No grade to delete"}, status=421)
+
+        elif request.method == 'PUT':
+            data = JSONParser().parse(request)
+            id = request.GET['id']
+            grade = data['grade']
+            comment = data['comment']
+
+            try:
+                obj = R_grade.objects.get(id=id)
+                obj.grade = grade
+                obj.comment = comment
+                obj.save()
+
+                return JsonResponse({"message":"SUCCESS"}, safe=False, status=200)
+            except:
+                return JsonResponse({"message":"No grade to update"}, status=421)
 
     except:
         return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN"}, status=411)
