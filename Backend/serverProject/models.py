@@ -11,8 +11,7 @@ class User(models.Model): #User Table
     # updated_at = models.DateTimeField(auto_now_add=True)
     
 class R_info(models.Model): #Recipe information Table
-    # rId = models.IntegerField(primary_key=True)
-    rId = models.IntegerField(primary_key=True)
+    rId = models.AutoField(primary_key=True)
     recipe_title = models.CharField(max_length=100)
     serving = models.CharField(max_length=20)
     cookingTime = models.CharField(max_length=20)

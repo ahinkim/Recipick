@@ -44,7 +44,7 @@ def ranking_list(request):
 
 
 @csrf_exempt
-def get_recipe(request):
+def recipe(request):
     if request.method == 'GET':
         try:
             rId = request.GET['rId']
@@ -53,7 +53,59 @@ def get_recipe(request):
             return JsonResponse(serializer.data, safe=False, status=200)
         except:
             return JsonResponse({"message":"SERVER ERROR"}, status=500)
+ 
+    try:
+        access_data = request.META['HTTP_ACCESSTOKEN']
+        access = access_data.encode('utf-8')
+        obj = User.objects.get(accessToken=access)
 
+        if request.method == 'POST':
+            data = JSONParser().parse(request)
+            r_serializer = RecipeSerializer(data=data)
+            if r_serializer.is_valid():
+                r_info_obj=r_serializer.save()
+                userId = obj.userId
+                rId = r_info_obj.rId
+                data = {"userId":userId, "rId":rId}
+
+                #user가 등록한 recipe들 저장하기 위해 UserRecipeList에도 추가
+                ur_serializer = UserRecipeListSerializer(data=data)
+                if ur_serializer.is_valid():
+                    ur_serializer.save()
+                else:
+                    return JsonResponse(ur_serializer.errors, status=404)
+
+                return JsonResponse({'message': 'SUCCESS'}, status=200)
+            return JsonResponse(r_serializer.errors, status=404)
+
+        elif request.method == 'DELETE':
+            rId = request.GET['rId']
+
+            try:
+                obj = R_info.objects.get(rId=rId)
+                obj.delete()
+                return JsonResponse({"message":"SUCCESS"}, safe=False, status=200)
+            except:
+                return JsonResponse({"message":"No recipe to delete"}, status=421)
+
+        # elif request.method == 'PUT':
+        #     data = JSONParser().parse(request)
+        #     id = request.GET['id']
+        #     grade = data['grade']
+        #     comment = data['comment']
+
+        #     try:
+        #         obj = R_grade.objects.get(id=id)
+        #         obj.grade = grade
+        #         obj.comment = comment
+        #         obj.save()
+
+        #         return JsonResponse({"message":"SUCCESS"}, safe=False, status=200)
+        #     except:
+        #         return JsonResponse({"message":"No grade to update"}, status=421)
+            
+    except:
+        return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN"}, status=411)
 
 @csrf_exempt
 def wishlist(request):
@@ -99,7 +151,7 @@ def wishlist(request):
 
 
 @csrf_exempt
-def UserRGrade(request):
+def userRGrade(request):
     if request.method == 'GET':
         try:
             rId = request.GET['rId']
@@ -160,3 +212,5 @@ def UserRGrade(request):
 
     except:
         return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN"}, status=411)
+
+
