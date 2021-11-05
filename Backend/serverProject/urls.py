@@ -22,5 +22,7 @@ urlpatterns = [
 
     path('user/recipelist', recipeViews.userRecipeList),
     path('recipe/order/', recipeViews.recipeOrder),
+    # path('recipe/test', recipeViews.test),
+
     path('auth', include('rest_framework.urls', namespace='rest_framework'))
 ]

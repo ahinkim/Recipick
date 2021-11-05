@@ -75,10 +75,10 @@ def recipe(request):
                 if ur_serializer.is_valid():
                     ur_serializer.save()
                 else:
-                    return JsonResponse(ur_serializer.errors, status=404)
+                    return JsonResponse(ur_serializer.errors, status=504)
 
                 return JsonResponse({'message': 'SUCCESS'}, status=200)
-            return JsonResponse(r_serializer.errors, status=404)
+            return JsonResponse(r_serializer.errors, status=504)
 
         elif request.method == 'DELETE':
             rId = request.GET['rId']
@@ -91,7 +91,7 @@ def recipe(request):
                 return JsonResponse({"message":"No recipe to delete"}, status=421)
             
     except:
-        return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN"}, status=411)
+        return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN OR REQUEST ERROR"}, status=411)
 
 @csrf_exempt
 def wishlist(request):
@@ -107,7 +107,7 @@ def wishlist(request):
                 serializer = userWishListSerializer(query_set, many=True)
                 return JsonResponse({"wish_list": serializer.data}, safe=False, status=200)
             except:
-                return JsonResponse({"message":"No wishlist for user"}, status=401)
+                return JsonResponse({"message":"SERVER ERROR"}, status=500)
 
         elif request.method == 'POST':
             rId = request.GET['rId']
@@ -120,7 +120,7 @@ def wishlist(request):
                     serializer.save()
                     return JsonResponse({"message":"SUCCESS"}, safe=False, status=200)
 
-                return JsonResponse(serializer.errors, status=404)
+                return JsonResponse(serializer.errors, status=504)
         
         elif request.method == 'DELETE':
             rId = request.GET['rId']
@@ -133,7 +133,7 @@ def wishlist(request):
                 return JsonResponse({"message":"No recipes to delete"}, status=421)
 
     except:
-        return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN"}, status=411)
+        return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN OR REQUEST ERROR"}, status=411)
 
 
 @csrf_exempt
@@ -145,7 +145,7 @@ def userRGrade(request):
             serializer = UserGradeSerializer(query_set, many=True)
             return JsonResponse({"grade_list": serializer.data}, safe=False, status=200)
         except:
-            return JsonResponse({"message":"No grade for Recipe"}, status=401)
+            return JsonResponse({"message":"REQUEST ERROR"}, status=421)
         
     try:
         access_data = request.META['HTTP_ACCESSTOKEN']
@@ -168,7 +168,7 @@ def userRGrade(request):
                     serializer.save()
                     return JsonResponse({"message":"SUCCESS"}, safe=False, status=200)
 
-                return JsonResponse(serializer.errors, status=404)
+                return JsonResponse(serializer.errors, status=504)
         
         elif request.method == 'DELETE':
             id = request.GET['id']
@@ -197,7 +197,7 @@ def userRGrade(request):
                 return JsonResponse({"message":"No grade to update"}, status=421)
 
     except:
-        return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN"}, status=411)
+        return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN OR REQUEST ERROR"}, status=411)
 
 
 @csrf_exempt
@@ -214,10 +214,10 @@ def userRecipeList(request):
                 serializer = UserRecipeListSerializer(query_set, many=True)
                 return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
             except:
-                return JsonResponse({"message":"No wishlist for user"}, status=401)
+                return JsonResponse(serializer.errors, status=504)
     
     except:
-        return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN"}, status=411)
+        return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN OR REQUEST ERROR"}, status=411)
 
 @csrf_exempt
 def recipeOrder(request):
@@ -228,4 +228,6 @@ def recipeOrder(request):
             serializer = R_OrderSerializer(query_set, many=True)
             return JsonResponse({"r_order": serializer.data}, safe=False, status=200)
         except:
-            return JsonResponse({"message":"Recipe for rId does not exist"}, status=421)
+            return JsonResponse({"message":"REQUEST ERROR"}, status=421)
+
+

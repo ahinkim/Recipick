@@ -18,7 +18,7 @@ class R_info(models.Model): #Recipe information Table
     difficult = models.CharField(max_length=20)
     recipe_source = models.CharField(max_length=100)
     menu_img = models.CharField(max_length=100)
-    recipe_category = models.CharField(max_length=20)
+    recipe_category = models.CharField(max_length=20, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
