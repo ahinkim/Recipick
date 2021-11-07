@@ -4,6 +4,7 @@ import csv
 import random
 from pathlib import Path
 
+#일단 아무런 값이나 넣어주세요! 영향은 없습니당.
 def getnerateRecipe(userId):
   #경로가지고오기 : 실제로는 다를 수 있음 확인해 봐야한다.
   recipePath = str(Path.cwd()) + "/Bigdata/bigdata/recipeData.csv"
