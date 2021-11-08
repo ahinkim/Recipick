@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="org.techtown.recipe">
+
+<uses-permission android:name="android.permission.INTERNET"/>
+
+<application
+    android:usesCleartextTraffic="true"
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="Recipe"
+    android:roundIcon="@mipmap/ic_launcher_round"
+    android:supportsRtl="true"
+    android:theme="@style/Theme.Recipe">
+    <activity android:name="org.techtown.recipe.MainActivity" android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+    <activity android:name="org.techtown.recipe.RegisterActivity" android:exported="true"></activity>
+    <activity android:name="org.techtown.recipe.MyPageActivity" android:exported="true"></activity>
+    <activity android:name="org.techtown.recipe.LoginActivity" android:exported="true"></activity>
+    <activity android:name="org.techtown.recipe.AutoLoginActivity" android:exported="true"></activity>
+    <activity android:name="org.techtown.recipe.SplashActivity" android:exported="true"></activity>
+    <activity android:name="org.techtown.recipe.RankingActivity" android:exported="true"></activity>
+
+</application>
+
+</manifest>
