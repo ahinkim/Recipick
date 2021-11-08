@@ -4,43 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="0dp"
+    app:cardCornerRadius="5dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="5dp"
     >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <ImageView
-                android:id="@+id/contentsImageView"
+                android:id="@+id/mainImageView"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_gravity="bottom"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/sampleimage" />
 
             <TextView
-                android:id="@+id/contentsTextView"
+                android:id="@+id/mainTitleTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="275dp"
-                android:layout_marginLeft="3dp"
+                android:layout_margin="10dp"
                 android:gravity="center"
                 android:text="옥수수가 톡톡 콘치즈 김치볶음밥 만들기"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:fontFamily="@font/recipekorea"
-                android:textColor="#F8EDEB"
-                android:textSize="20sp"
+                android:fontFamily="@font/ssurround_air"
+                android:textColor="#000000"
+                android:textSize="15sp"
 
                 />
-        </FrameLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

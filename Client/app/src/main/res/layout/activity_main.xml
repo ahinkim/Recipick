@@ -63,7 +63,8 @@
                 android:background="@android:color/transparent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/search" />
+                app:srcCompat="@drawable/search"
+                />
 
             <View
             android:id="@+id/view3"

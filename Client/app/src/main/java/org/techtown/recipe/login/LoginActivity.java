@@ -1,4 +1,4 @@
-package org.techtown.recipe;
+package org.techtown.recipe.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,16 +11,23 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.techtown.recipe.MyApplication;
+import org.techtown.recipe.R;
+import org.techtown.recipe.main.MainActivity;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -59,7 +66,12 @@ public class LoginActivity extends AppCompatActivity {
                 headers.put("userId", userId);
                 headers.put("password",password);
 
-                Response.Listener<String> responseListener= new Response.Listener<String>() {
+                //url 받아오기
+                MyApplication myApp = (MyApplication) getApplication();
+                String url=myApp.getGlobalString();
+                url += "/users/login";
+
+                StringRequest LoginRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
@@ -89,12 +101,10 @@ public class LoginActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                };
-                Response.ErrorListener errorListener = new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                        NetworkResponse networkResponse = error.networkResponse;
+                        NetworkResponse networkResponse=error.networkResponse;
                         if (networkResponse.statusCode == 401) {
                             //아이디나 비밀번호 다를 때
                             Log.d("statuscode", "" + networkResponse.statusCode);
@@ -106,10 +116,15 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText( getApplicationContext(), "서버에 오류가 발생하였습니다.", Toast.LENGTH_SHORT ).show();
                         }
                     }
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        return headers;
+                    }
                 };
-                LoginRequest loginRequest = new LoginRequest( headers, responseListener, errorListener );
-                RequestQueue queue = Volley.newRequestQueue( LoginActivity.this );
-                queue.add( loginRequest );
+                RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
+                requestQueue.add(LoginRequest);
+
             }
         });
     }

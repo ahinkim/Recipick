@@ -19,7 +19,7 @@
         android:layout_marginRight="0dp"
         android:layout_marginBottom="0dp">
         <TextView
-            android:id="@+id/contentsNumberTextView"
+            android:id="@+id/orderNumberTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -31,9 +31,9 @@
             android:ellipsize="end"
             android:fontFamily="@font/dangdanghae"
             android:textColor="#FEC89A"
-            android:textSize="25sp"/>
+            android:textSize="15sp"/>
         <TextView
-            android:id="@+id/contentsTextView"
+            android:id="@+id/orderContentTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -44,7 +44,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/ssurround_air"
             android:textColor="#000000"
-            android:textSize="18sp"/>
+            android:textSize="15sp"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
