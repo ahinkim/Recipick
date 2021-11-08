@@ -97,6 +97,7 @@
                 android:background="@drawable/gray_edit_text"
                 android:fontFamily="@font/ssurround_air"
 
+                android:maxLength="16"
                 android:hint="아이디"
                 android:inputType="textPersonName"
                 android:paddingLeft="15dp"
@@ -125,6 +126,7 @@
                 android:layout_marginLeft="26dp"
                 android:layout_marginRight="26dp"
 
+                android:maxLength="16"
                 android:background="@drawable/gray_edit_text"
                 android:fontFamily="@font/ssurround_air"
                 android:hint="비밀번호"

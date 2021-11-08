@@ -18,4 +18,8 @@
     <style name="BottomNavigationViewTextStyle">
         <item name="android:fontFamily">@font/ssurround_air</item>
     </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#FEC89A</item>
+        <item name="colorControlActivated">#FEC89A</item>
+    </style>
 </resources>

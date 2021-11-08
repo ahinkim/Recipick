@@ -19,12 +19,13 @@
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:orientation="horizontal"
-            android:weightSum="20"
+            android:layout_weight="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:weightSum="20"
+            >
 
             <View
                 android:id="@+id/view1"
@@ -33,16 +34,15 @@
                 android:layout_weight="1">
 
             </View>
-
             <ImageButton
                 android:id="@+id/exit_button"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
-
                 android:scaleType="fitXY"
+                android:layout_gravity="center_vertical"
+
+                android:background="@android:color/transparent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/longarrow" />
@@ -51,11 +51,11 @@
                 android:id="@+id/textView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_weight="16"
-                android:fontFamily="@font/dancing_script_bold"
-
                 android:gravity="center"
+                android:layout_gravity="center_vertical"
+
+                android:fontFamily="@font/dancing_script_bold"
                 android:text="Recipick"
                 android:textColor="#FEC89A"
                 android:textSize="25sp"
@@ -64,17 +64,18 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/favorite_button"
+                android:id="@+id/delete_button"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
-
                 android:scaleType="fitXY"
+                android:layout_gravity="center_vertical"
+
+                android:background="@android:color/transparent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/heart" />
+                app:srcCompat="@drawable/trashcan"
+                />
 
             <View
                 android:id="@+id/view2"
@@ -105,22 +106,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <ImageView
                     android:id="@+id/RecipeImageView"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    />
 
                 <TextView
                     android:id="@+id/recipeTitleTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    android:fontFamily="@font/recipekorea"
                     android:gravity="center"
                     android:text=""
+                    android:fontFamily="@font/recipekorea"
                     android:textColor="#000000"
                     android:textSize="17sp" />
 
@@ -134,18 +137,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:weightSum="3"
+                    >
 
                     <TextView
                         android:id="@+id/recipePeopleTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/dangdanghae"
-
                         android:gravity="center"
+                        android:layout_weight="1"
+
                         android:text=""
+                        android:fontFamily="@font/dangdanghae"
                         android:textColor="#000000"
                         android:textSize="15sp" />
 
@@ -154,11 +158,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/dangdanghae"
-
                         android:gravity="center"
+                        android:layout_weight="1"
+
                         android:text=""
+                        android:fontFamily="@font/dangdanghae"
                         android:textColor="#000000"
                         android:textSize="15sp" />
 
@@ -167,11 +171,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
+                        android:text=""
                         android:layout_weight="1"
-                        android:fontFamily="@font/dangdanghae"
 
                         android:gravity="center"
-                        android:text=""
+                        android:fontFamily="@font/dangdanghae"
                         android:textColor="#000000"
                         android:textSize="15sp" />
 
@@ -188,10 +192,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    android:fontFamily="@font/ssurround_air"
+                    android:text=" 재료와 양념 "
 
                     android:gravity="left"
-                    android:text=" 재료와 양념 "
+                    android:fontFamily="@font/ssurround_air"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -199,18 +203,19 @@
                     android:id="@+id/view4_1"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:background="#E5E5E5"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="#E5E5E5" />
+                    />
 
                 <TextView
                     android:id="@+id/recipeSourceTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    android:fontFamily="@font/ssurround_air"
-
                     android:text=""
+
+                    android:fontFamily="@font/ssurround_air"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -225,14 +230,14 @@
                     android:id="@+id/orderRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-
+                    android:nestedScrollingEnabled="false"
+                    />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/gradeRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-
+                    android:nestedScrollingEnabled="false"
+                    />
 
             </LinearLayout>
 
