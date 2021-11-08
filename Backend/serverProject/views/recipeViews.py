@@ -22,6 +22,15 @@ from rest_framework.parsers import JSONParser
 import jwt
 # import datetime
 
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))))
+
+from Bigdata.bigdata.recipesGenerate import getnerateRecipe
+
+from django.db.models import Q
+
 #main페이지의 default레시피들 조회
 @csrf_exempt
 def main_list(request):
@@ -230,4 +239,53 @@ def recipeOrder(request):
         except:
             return JsonResponse({"message":"REQUEST ERROR"}, status=421)
 
+
+@csrf_exempt
+def recipeOrder(request):
+    if request.method == 'GET':
+        try:
+            rId = request.GET['rId']
+            query_set = R_order.objects.filter(rId=rId).all()
+            serializer = R_OrderSerializer(query_set, many=True)
+            return JsonResponse({"r_order": serializer.data}, safe=False, status=200)
+        except:
+            return JsonResponse({"message":"REQUEST ERROR"}, status=421)
+
+
+@csrf_exempt
+def search(request):
+    try:
+        if request.method == 'POST':
+            data = JSONParser().parse(request)
+            searchWord = data['searchWord']
+
+            query_set = R_info.objects.filter(Q(recipe_title__icontains=searchWord)).distinct()
+            query_set2 = R_info.objects.filter(Q(recipe_source__icontains=searchWord)).distinct()
+            query_set3 = R_info.objects.filter(Q(recipe_category__icontains=searchWord)).distinct()
+
+            query_set = query_set.union(query_set2)
+            query_set = query_set.union(query_set3)
+            query_set = query_set.distinct()
+
+            serializer = RecipeSerializer(query_set, many=True)
+            
+            return JsonResponse({"recipes": serializer.data}, status=200)
+            
+    except:
+        return JsonResponse({"message":"REQUEST ERROR"}, status=421)
+
+
+# @csrf_exempt
+# def test(request):
+#     if request.method == 'GET':
+#         try:
+#             rId_list = getnerateRecipe(1)
+#             rId_list.append(3)
+#             rId_list.append(5)
+#             rId_list.append(7)
+#             query_set = R_info.objects.filter(rId__in=rId_list).all()
+#             serializer = RecipeSerializer(query_set, many=True)
+#             return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
+#         except:
+#             return JsonResponse({"message":"REQUEST ERROR"}, status=421)
 

@@ -18,14 +18,14 @@ class R_info(models.Model): #Recipe information Table
     difficult = models.CharField(max_length=20)
     recipe_source = models.CharField(max_length=100)
     menu_img = models.CharField(max_length=100)
-    recipe_category = models.CharField(max_length=20, null=True)
+    recipe_category = models.CharField(max_length=100, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 class R_order(models.Model): #Recipe Order Table
     rId =  models.ForeignKey('R_info', on_delete=models.CASCADE)
     recipe_order = models.IntegerField()
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -48,6 +48,11 @@ class RankingDefault(models.Model):
 class WishList(models.Model):
     userId = models.ForeignKey('User', on_delete=models.CASCADE)
     rId = models.ForeignKey('R_info', on_delete=models.CASCADE)
+
+class UserPreferredCategories(models.Model): #사용자가 선호하는 카테고리 테이블
+    userId = models.ForeignKey('User', on_delete=models.CASCADE, related_name = 'usersInCategory')
+    category = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class UserRecipeList(models.Model): #사용자가 등록한 레시피 리스트
     userId = models.ForeignKey('User', on_delete=models.CASCADE, related_name = 'users')
