@@ -163,3 +163,19 @@ def userSecession(request):
         except: 
             return JsonResponse({"message": "FALSE"},status=401)
         
+#access를 id로 변환
+@csrf_exempt
+def accessToId(request):
+    if request.method == 'GET':
+        try:
+            data = request.META['HTTP_ACCESSTOKEN']
+            access = data.encode('utf-8')
+            try:
+                obj = User.objects.get(accessToken = access)
+                userId = obj.userId
+                return JsonResponse({"userId": userId}, status=200)
+
+            except: 
+                return JsonResponse({"message": "MISMATCHED_ACCESSTOKEN OR REQUEST ERROR"},status=411)
+        except:
+                return JsonResponse({"message": "MISMATCHED_ACCESSTOKEN OR REQUEST ERROR"},status=411)

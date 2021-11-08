@@ -12,6 +12,8 @@ urlpatterns = [
     path('users/login', userViews.login),
     path('users/access', userViews.access),
     path('users/reissuance', userViews.reissuance),
+    path('users/access', userViews.access),
+    path('users/access/id', userViews.accessToId),
 
     path('recipe/defaultMain', recipeViews.main_list),
     path('recipe/defaultRanking', recipeViews.ranking_list),
