@@ -1,15 +1,18 @@
-import os
 import pandas as pd
-import csv
 import random
 from pathlib import Path
 
-#일단 아무런 값이나 넣어주세요! 영향은 없습니당.
-def getnerateRecipe(userId):
+def getnerateRecipe(wishList): #리스트로 넣으셔야해요!
   #경로가지고오기 : 실제로는 다를 수 있음 확인해 봐야한다.
+
+  ## MARK: 경로 업데이트 / 서버기준 : 이걸로하세요! ##
+  #recipePath = str(Path.cwd().parent) + r"/Bigdata/bigdata/recipeData.csv"
+  #collaboratedPath = str(Path.cwd().parent) + r"/Bigdata/bigdata/collaborated.csv"
+
+  #나의 기준
   recipePath = str(Path.cwd()) + "/Bigdata/bigdata/recipeData.csv"
   collaboratedPath = str(Path.cwd()) + "/Bigdata/bigdata/collaborated.csv"
-
+  
   #데이터
   recipeData = pd.read_csv(recipePath,encoding='utf-8-sig')
   collaborated = pd.read_csv(collaboratedPath,encoding='utf-8')
@@ -17,15 +20,10 @@ def getnerateRecipe(userId):
   #데이터 수정
   recipeData = recipeData.drop(['Unnamed: 0'],axis = 1)
   collaborated = collaborated.set_index('recipe_category')
-    
-  # #유저의 선호 카테고리 가져오기 : 추후 구현
-  # #def getUserWishCategroy(userId): 
-  # # return category 
-
 
   # #유저의 선호 카테고리의 상위 3~5개의 카테고리를 반환
   def is_topCategory(collaborated,wishCategory):
-    isTopCategory = collaborated[wishCategory] >=0.2 #유사도 0.4이상은 너무 적다.. 고려해야할 사항 : 유사도를 낮추거나 기본레시피리스트가 필요
+    isTopCategory = collaborated[wishCategory] >=0.4 #유사도 0.4이상은 너무 적다.. 고려해야할 사항 : 유사도를 낮추거나 기본레시피리스트가 필요
     categoryList = collaborated[isTopCategory]
     categoryList = categoryList.index.to_list()  
     return categoryList #list
@@ -42,16 +40,15 @@ def getnerateRecipe(userId):
       return ridList #list
 
   #시작
-  # userId
-  # wishCategory = getUserWishCategory(userId)
-  wishCategory = '가라아게' # getUserWishCategory를 해야한다. 편의를 위해 임의로 넣어둠.
-  categories = is_topCategory(collaborated,wishCategory)
-  recipeList = is_recipes(recipeData,categories)
+  recipeList = []
+  for wishCategory in wishList:
+    categories = is_topCategory(collaborated,wishCategory)
+    recipeList += is_recipes(recipeData,categories)
 
-  #임의로 셔플
+  #셔플
   random.shuffle(recipeList)
-
   #100개보다도 작은 rId개수가 나올 경우 추가로 랜덤한 레시피를 추가해주자.
-  # print(len(recipeList))
   return recipeList
-  
+
+myWish = ["가라아게","가나슈마카롱","가나슈초코케이크","가자미구이","닭갈비덮밥"] 
+getnerateRecipe(myWish)
