@@ -64,8 +64,11 @@ def main_list(request):
                     return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
 
                 else:
-                    query_set = MainDefault.objects.all()
-                    serializer = MainDefaultSerializer(query_set, many=True)
+                    query_set = MainDefault.objects.values_list('rId', flat = True)
+                    rId_list = list(query_set)
+                    query_set = R_info.objects.filter(rId__in=rId_list).all()
+                    serializer = RecipeSerializer(query_set, many=True)
+                    
                     return JsonResponse({"recipes":serializer.data}, safe=False, status=200)
 
             except:
