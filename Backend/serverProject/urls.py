@@ -15,8 +15,8 @@ urlpatterns = [
     path('users/access', userViews.access),
     path('users/access/id', userViews.accessToId),
 
-    path('recipe/defaultMain', recipeViews.main_list),
-    path('recipe/defaultRanking', recipeViews.ranking_list),
+    path('recipe/Main', recipeViews.main_list),
+    path('recipe/Ranking', recipeViews.ranking_list),
 
     path('recipe/', recipeViews.recipe),
     path('recipe/wishlist/', recipeViews.wishlist),

@@ -8,6 +8,7 @@ from .models import WishList
 from .models import R_grade
 from .models import UserRecipeList
 from .models import R_order
+from .models import UserPreferredCategories
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -61,3 +62,13 @@ class R_OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = R_order
         fields = ['rId', 'recipe_order', 'description']
+
+class UserPreferCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserPreferredCategories
+        fields = ['userId', 'category']
+
+class UserPreferCategoryListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserPreferredCategories
+        fields = ['category']

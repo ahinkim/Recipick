@@ -8,6 +8,7 @@ from ..models import User
 from ..models import WishList
 from ..models import R_grade
 from ..models import R_order
+from ..models import UserPreferredCategories
 
 from ..serializers import RecipeSerializer
 from ..serializers import MainDefaultSerializer
@@ -16,6 +17,8 @@ from ..serializers import userWishListSerializer
 from ..serializers import UserGradeSerializer
 from ..serializers import UserRecipeListSerializer
 from ..serializers import R_OrderSerializer
+from ..serializers import UserPreferCategorySerializer
+from ..serializers import UserPreferCategoryListSerializer
 
 from rest_framework.parsers import JSONParser
 
@@ -31,18 +34,46 @@ from Bigdata.bigdata.recipesGenerate import getnerateRecipe
 
 from django.db.models import Q
 
-#main페이지의 default레시피들 조회
+from django.db.models import Count
+
+#main페이지 유저 맞춤형 조회 or default page 조회
 @csrf_exempt
 def main_list(request):
     if request.method == 'GET':
         try:
-            query_set = MainDefault.objects.all()
-            serializer = MainDefaultSerializer(query_set, many=True)
-            return JsonResponse({"recipes":serializer.data}, safe=False, status=200)
-        except:
-            return JsonResponse({"message":"SERVER ERROR"}, status=500)
+            access_data = request.META['HTTP_ACCESSTOKEN']
+            access = access_data.encode('utf-8')
+            userObj = User.objects.get(accessToken=access)
+            userId = userObj.userId
 
-#ranking페이지의 default레시피들 조회
+            try:
+                if UserPreferredCategories.objects.filter(userId=userId).exists():
+                    query_set = UserPreferredCategories.objects.filter(userId=userId).all()
+                    serializer = UserPreferCategoryListSerializer(query_set, many=True)
+                    userPreferCategoryList = []
+                    
+                    for Category in serializer.data:
+                        userPreferCategoryList.append(Category['category'])
+
+                    rId_list = getnerateRecipe(userPreferCategoryList)
+                    
+                    query_set = R_info.objects.filter(rId__in=rId_list).all()
+                    serializer = RecipeSerializer(query_set, many=True)
+                    return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
+
+                else:
+                    query_set = MainDefault.objects.all()
+                    serializer = MainDefaultSerializer(query_set, many=True)
+                    return JsonResponse({"recipes":serializer.data}, safe=False, status=200)
+
+            except:
+                return JsonResponse({"message":"SERVER ERROR"}, status=500)
+                    
+        except:
+            return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN OR REQUEST ERROR"}, status=411)
+
+
+#ranking페이지의 클릭수별 조회 or default레시피 조회
 @csrf_exempt
 def ranking_list(request):
     if request.method == 'GET':
@@ -61,6 +92,39 @@ def recipe(request):
             rId = request.GET['rId']
             query_set = R_info.objects.filter(rId=rId)
             serializer = RecipeSerializer(query_set, many=True)
+            
+            #존재하는 rId라면 유저 선호카테고리 테이블에 넣기
+            if R_info.objects.filter(rId=rId).exists():
+                try:
+                    access_data = request.META['HTTP_ACCESSTOKEN']
+                    access = access_data.encode('utf-8')
+                    userObj = User.objects.get(accessToken=access)
+                    recipeObj = R_info.objects.filter(rId=rId).get()
+                    userId = userObj.userId
+                    recipe_category = recipeObj.recipe_category
+                    data = {"userId": userId, "category": recipe_category}
+                    
+                    #만약에 원래 존재하는 데이터였다면 중복방지를 위해 삭제하고 다시 만들기
+                    if UserPreferredCategories.objects.filter(userId=userId, category=recipe_category).exists():
+                        upcObj = UserPreferredCategories.objects.filter(userId=userId, category=recipe_category).get()
+                        upcObj.delete()
+                        upc_serializer = UserPreferCategorySerializer(data=data)   
+                        if upc_serializer.is_valid():
+                            upc_serializer.save()
+                    else:
+                        #만약 데이터 넣은 후에 5개 이상 있으면 제일 오래된 데이터 삭제하기
+                        upcObj = UserPreferredCategories.objects.filter(userId=userId).all()
+                        upc_serializer = UserPreferCategorySerializer(data=data) 
+                        if upc_serializer.is_valid():
+                            upc_serializer.save() 
+                        objCount = upcObj.aggregate(count=Count('id'))
+                        
+                        if objCount['count'] > 5:
+                            upcObj = upcObj = UserPreferredCategories.objects.filter(userId=userId).all().first()
+                            upcObj.delete()
+                except:
+                    return JsonResponse({"message":"MISMATCHED_ACCESSTOKEN OR REQUEST ERROR"}, status=411)
+
             return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
         except:
             return JsonResponse({"message":"SERVER ERROR"}, status=500)
