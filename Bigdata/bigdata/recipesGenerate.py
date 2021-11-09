@@ -5,13 +5,13 @@ from pathlib import Path
 def getnerateRecipe(wishList): #리스트로 넣으셔야해요!
   #경로가지고오기 : 실제로는 다를 수 있음 확인해 봐야한다.
 
-  ## MARK: 경로 업데이트 / 서버기준 : 이걸로하세요! ##
-  #recipePath = str(Path.cwd().parent) + r"/Bigdata/bigdata/recipeData.csv"
-  #collaboratedPath = str(Path.cwd().parent) + r"/Bigdata/bigdata/collaborated.csv"
+  # MARK: 경로 업데이트 / 서버기준 : 이걸로하세요! ##
+  recipePath = str(Path.cwd().parent) + r"/Bigdata/bigdata/recipeData.csv"
+  collaboratedPath = str(Path.cwd().parent) + r"/Bigdata/bigdata/collaborated.csv"
 
-  #나의 기준
-  recipePath = str(Path.cwd()) + "/Bigdata/bigdata/recipeData.csv"
-  collaboratedPath = str(Path.cwd()) + "/Bigdata/bigdata/collaborated.csv"
+  # #나의 기준
+  # recipePath = str(Path.cwd()) + "/Bigdata/bigdata/recipeData.csv"
+  # collaboratedPath = str(Path.cwd()) + "/Bigdata/bigdata/collaborated.csv"
   
   #데이터
   recipeData = pd.read_csv(recipePath,encoding='utf-8-sig')
@@ -42,13 +42,16 @@ def getnerateRecipe(wishList): #리스트로 넣으셔야해요!
   #시작
   recipeList = []
   for wishCategory in wishList:
-    categories = is_topCategory(collaborated,wishCategory)
-    recipeList += is_recipes(recipeData,categories)
+    try:
+      categories = is_topCategory(collaborated,wishCategory)
+      recipeList += is_recipes(recipeData,categories)
+    except KeyError:
+      continue
 
   #셔플
   random.shuffle(recipeList)
   #100개보다도 작은 rId개수가 나올 경우 추가로 랜덤한 레시피를 추가해주자.
   return recipeList
 
-myWish = ["가라아게","가나슈마카롱","가나슈초코케이크","가자미구이","닭갈비덮밥"] 
-getnerateRecipe(myWish)
+# myWish = ["가라아게","가나슈마카롱","가나슈초코케이크","가자미구이","닭갈비덮밥"] 
+# getnerateRecipe(myWish)
