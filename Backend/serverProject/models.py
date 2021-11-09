@@ -41,9 +41,9 @@ class R_grade(models.Model): #Recipe grade Table
 class MainDefault(models.Model):
     rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'mainRecipes')
 
-class RankingDefault(models.Model): 
-    rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'rankingRecipes')
-    rank = models.IntegerField(auto_created=True, null=False)
+# class RankingDefault(models.Model): 
+#     rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'rankingRecipes')
+#     rank = models.IntegerField(auto_created=True, null=False)
 
 class WishList(models.Model):
     userId = models.ForeignKey('User', on_delete=models.CASCADE)
@@ -53,6 +53,12 @@ class UserPreferredCategories(models.Model): #사용자가 선호하는 카테�
     userId = models.ForeignKey('User', on_delete=models.CASCADE, related_name = 'usersInCategory')
     category = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class RankingViews(models.Model): #랭킹 조회수 테이블
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE)
+    views = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class UserRecipeList(models.Model): #사용자가 등록한 레시피 리스트
     userId = models.ForeignKey('User', on_delete=models.CASCADE, related_name = 'users')

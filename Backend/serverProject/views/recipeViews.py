@@ -2,23 +2,25 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from ..models import MainDefault, UserRecipeList
-from ..models import RankingDefault
+# from ..models import RankingDefault
 from ..models import R_info
 from ..models import User
 from ..models import WishList
 from ..models import R_grade
 from ..models import R_order
 from ..models import UserPreferredCategories
+from ..models import RankingViews
 
 from ..serializers import RecipeSerializer
 from ..serializers import MainDefaultSerializer
-from ..serializers import RankingDefaultSerializer
+# from ..serializers import RankingDefaultSerializer
 from ..serializers import userWishListSerializer
 from ..serializers import UserGradeSerializer
 from ..serializers import UserRecipeListSerializer
 from ..serializers import R_OrderSerializer
 from ..serializers import UserPreferCategorySerializer
 from ..serializers import UserPreferCategoryListSerializer
+from ..serializers import RankingViewsSerializer
 
 from rest_framework.parsers import JSONParser
 
@@ -78,9 +80,10 @@ def main_list(request):
 def ranking_list(request):
     if request.method == 'GET':
         try:
-            query_set = RankingDefault.objects.all()
-            serializer = RankingDefaultSerializer(query_set, many=True)
-            return JsonResponse({"recipes":serializer.data}, safe=False, status=200)
+            rankObj = RankingViews.objects.all().order_by('-views', 'id')[:50]
+            serializer = RankingViewsSerializer(rankObj, many=True)
+            return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
+
         except:
             return JsonResponse({"message":"SERVER ERROR"}, status=500)
 
@@ -96,6 +99,17 @@ def recipe(request):
             #존재하는 rId라면 유저 선호카테고리 테이블에 넣기
             if R_info.objects.filter(rId=rId).exists():
                 try:
+                    #Ranking조회수 올리기
+                    if RankingViews.objects.filter(rId=rId).exists():
+                        rankObj = RankingViews.objects.filter(rId=rId).get()
+                        rankObj.views = rankObj.views + 1
+                        rankObj.save()
+                    else:
+                        data = {"rId": rId, "views": 1}
+                        rank_serializer = RankingViewsSerializer(data=data)
+                        if rank_serializer.is_valid():
+                            rank_serializer.save() 
+
                     access_data = request.META['HTTP_ACCESSTOKEN']
                     access = access_data.encode('utf-8')
                     userObj = User.objects.get(accessToken=access)
@@ -176,7 +190,7 @@ def wishlist(request):
 
         if request.method == 'GET':
             try:
-                query_set = WishList.objects.filter(userId=userId).all()
+                query_set = WishList.objects.filter(userId=userId).all().order_by('-id')
                 serializer = userWishListSerializer(query_set, many=True)
                 return JsonResponse({"wish_list": serializer.data}, safe=False, status=200)
             except:

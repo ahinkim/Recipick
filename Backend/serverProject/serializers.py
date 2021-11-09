@@ -3,12 +3,13 @@ from rest_framework import serializers
 from .models import User
 from .models import R_info
 from .models import MainDefault
-from .models import RankingDefault
+# from .models import RankingDefault
 from .models import WishList
 from .models import R_grade
 from .models import UserRecipeList
 from .models import R_order
 from .models import UserPreferredCategories
+from .models import RankingViews
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,14 +30,14 @@ class MainDefaultSerializer(serializers.ModelSerializer):
         self.fields['rId'] =  RecipeSerializer(read_only=True)
         return super(MainDefaultSerializer, self).to_representation(instance)
 
-class RankingDefaultSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RankingDefault
-        fields = ['rank','rId']
+# class RankingDefaultSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = RankingDefault
+#         fields = ['rank','rId']
         
-    def to_representation(self, instance):
-        self.fields['rId'] =  RecipeSerializer(read_only=True)
-        return super(RankingDefaultSerializer, self).to_representation(instance)
+#     def to_representation(self, instance):
+#         self.fields['rId'] =  RecipeSerializer(read_only=True)
+#         return super(RankingDefaultSerializer, self).to_representation(instance)
 
 class userWishListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -72,3 +73,12 @@ class UserPreferCategoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPreferredCategories
         fields = ['category']
+
+class RankingViewsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RankingViews
+        fields = ['views', 'rId']
+
+    def to_representation(self, instance):
+        self.fields['rId'] =  RecipeSerializer(read_only=True)
+        return super(RankingViewsSerializer, self).to_representation(instance)
