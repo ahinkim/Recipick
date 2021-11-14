@@ -6,7 +6,7 @@ def getnerateRecipe(wishList): #리스트로 넣으셔야해요!
   #경로가지고오기 : 실제로는 다를 수 있음 확인해 봐야한다.
 
   # MARK: 경로 업데이트 / 서버기준 : 이걸로하세요! ##
-  recipePath = str(Path.cwd().parent) + r"/Bigdata/bigdata/recipeData.csv"
+  recipePath = str(Path.cwd().parent) + r"/Bigdata/bigdata/RecipeData.csv"
   collaboratedPath = str(Path.cwd().parent) + r"/Bigdata/bigdata/collaborated.csv"
 
   # #나의 기준
@@ -14,7 +14,7 @@ def getnerateRecipe(wishList): #리스트로 넣으셔야해요!
   # collaboratedPath = str(Path.cwd()) + "/Bigdata/bigdata/collaborated.csv"
   
   #데이터
-  recipeData = pd.read_csv(recipePath,encoding='utf-8-sig')
+  recipeData = pd.read_csv(recipePath,encoding='cp949')
   collaborated = pd.read_csv(collaboratedPath,encoding='utf-8')
 
   #데이터 수정
