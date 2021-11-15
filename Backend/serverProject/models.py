@@ -19,15 +19,11 @@ class R_info(models.Model): #Recipe information Table
     recipe_source = models.CharField(max_length=100)
     menu_img = models.CharField(max_length=100)
     recipe_category = models.CharField(max_length=100, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 class R_order(models.Model): #Recipe Order Table
     rId =  models.ForeignKey('R_info', on_delete=models.CASCADE)
     recipe_order = models.IntegerField()
     description = models.CharField(max_length=200)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 class R_grade(models.Model): #Recipe grade Table
     userId = models.ForeignKey('User', on_delete=models.CASCADE)

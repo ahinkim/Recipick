@@ -39,6 +39,7 @@ from django.db.models import Q
 from django.db.models import Count
 
 #main페이지 유저 맞춤형 조회 or default page 조회
+import asyncio
 @csrf_exempt
 def main_list(request):
     if request.method == 'GET':
@@ -68,7 +69,7 @@ def main_list(request):
                     rId_list = list(query_set)
                     query_set = R_info.objects.filter(rId__in=rId_list).all()
                     serializer = RecipeSerializer(query_set, many=True)
-                    
+
                     return JsonResponse({"recipes":serializer.data}, safe=False, status=200)
 
             except:

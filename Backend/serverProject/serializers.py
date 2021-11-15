@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = R_info
-        fields = ['rId', 'recipe_title', 'serving', 'cookingTime', 'difficult', 'recipe_source', 'menu_img', 'recipe_category', 'created_at', 'updated_at']
+        fields = ['rId', 'recipe_title', 'serving', 'cookingTime', 'difficult', 'recipe_source', 'menu_img', 'recipe_category']
 
 class MainDefaultSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,11 +30,20 @@ class MainDefaultSerializer(serializers.ModelSerializer):
         self.fields['rId'] =  RecipeSerializer(read_only=True)
         return super(MainDefaultSerializer, self).to_representation(instance)
 
+class WishSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = R_info
+        fields = ['rId', 'recipe_title', 'menu_img']
+
 
 class userWishListSerializer(serializers.ModelSerializer):
     class Meta:
         model = WishList
         fields = ['userId', 'rId']
+        
+    def to_representation(self, instance):
+        self.fields['rId'] =  WishSerializer(read_only=True)
+        return super(userWishListSerializer, self).to_representation(instance)
 
 class UserGradeSerializer(serializers.ModelSerializer):
     class Meta:
