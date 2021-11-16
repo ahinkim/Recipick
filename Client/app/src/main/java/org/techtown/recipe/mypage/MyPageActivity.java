@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,15 +25,24 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.Task;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.techtown.recipe.MyApplication;
 import org.techtown.recipe.R;
+import org.techtown.recipe.grade.GradeActivity;
 import org.techtown.recipe.login.LoginActivity;
 import org.techtown.recipe.main.MainActivity;
+import org.techtown.recipe.main.OrderItem;
+import org.techtown.recipe.main.RecipeActivity;
 import org.techtown.recipe.ranking.RankingActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,8 +52,12 @@ public class MyPageActivity extends AppCompatActivity {
 
     Button withdraw_button;
     Button favorite_button;
+    TextView idTextView;
+    Button review_button;
 
     private BottomNavigationView navigation;
+
+    static RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +77,8 @@ public class MyPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mypage);
         withdraw_button=findViewById(R.id.withdraw_button);
         favorite_button=findViewById(R.id.favorite_button);
+        idTextView=findViewById(R.id.idTextView);
+        review_button=findViewById(R.id.review_button);
 
         navigation = findViewById( R.id.navigation );
 
@@ -90,12 +106,169 @@ public class MyPageActivity extends AppCompatActivity {
         });
         navigation.setSelectedItemId(R.id.mypage);
 
+        //accessToken 인증 받기
+        //url 받아오기
+        MyApplication myApp = (MyApplication) getApplication();
+        String url = myApp.getGlobalString();
+        url += "/users/access";
+
+        StringRequest TokenValidateRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                if (networkResponse.statusCode == 419) {
+                    //1. access token과 일치하는 사용자가 있지만 만료기간이 지난 경우
+                    Log.d("statuscode1", "" + networkResponse.statusCode);
+
+                    //url 받아오기
+                    MyApplication myApp = (MyApplication) getApplication();
+                    String url = myApp.getGlobalString();
+                    url += "/users/reissuance";
+
+                    StringRequest TokenReissueRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+
+                                //access token 재발급 성공
+                                String newAccessToken = jsonObject.getString("newAccessToken");
+                                preferences = getSharedPreferences("UserToken", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.putString("accessToken", newAccessToken);
+                                editor.commit();
+
+                                headers.put("accessToken", newAccessToken);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            NetworkResponse networkResponse = error.networkResponse;
+                            if (networkResponse.statusCode == 411 || networkResponse.statusCode == 412) {
+                                //1. refresh token, access token과 일치하는 사용자가 없는 경우 411
+                                //2. refresh token이 올바른 토큰 형태가 아닌 경우 412
+                                Log.d("statuscode2", "" + networkResponse.statusCode);
+                                Toast.makeText(getApplicationContext(), "저장된 회원정보에 오류가 발생하였습니다. 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                //서버 잘못되었을 때
+                                Log.d("statuscode2", "" + networkResponse.statusCode);
+                                Toast.makeText(getApplicationContext(), "서버에 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                            Intent intent2 = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent2);
+                            finish();
+                        }
+                    }) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            return headers;
+                        }
+                    };
+                    RequestQueue requestQueue = Volley.newRequestQueue(MyPageActivity.this);
+                    requestQueue.add(TokenReissueRequest);
+                } else if (networkResponse.statusCode == 401 || networkResponse.statusCode == 402) {
+                    //2. access token과 일치하는 사용자가 없는 경우 401
+                    //3. 유효하지 않은 토큰 형태인 경우 402
+                    Log.d("statuscode1", "" + networkResponse.statusCode);
+                    Toast.makeText(getApplicationContext(), "저장된 회원정보에 오류가 발생하였습니다. 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show();
+
+                    Intent intent2 = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent2);
+                    finish();
+                } else {
+                    //서버 잘못되었을 때
+                    Log.d("statuscode1", "" + networkResponse.statusCode);
+                    Toast.makeText(getApplicationContext(), "서버에 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+
+                    Intent intent2 = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent2);
+                    finish();
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return headers;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(MyPageActivity.this);
+        requestQueue.add(TokenValidateRequest);
+
+        //레시피 순서 받아오기
+        //url 받아오기
+        String IdUrl = myApp.getGlobalString();
+        IdUrl += "/users/access/id";
+
+        StringRequest IdRequest = new StringRequest(Request.Method.GET, IdUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String UserId = jsonObject.optString("userId")+"님 반갑습니다.";
+                    idTextView.setText(UserId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                //사용자와 맞는 accessToken이 없을 때(이 전에 클라이언트에서 검사했는데도 없는 경우니까 로그아웃 시켜야 됨)
+                if (networkResponse.statusCode == 411) {
+                    Log.d("statuscode", "" + networkResponse.statusCode);
+                    Toast.makeText(getApplicationContext(), "사용자 정보에 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                    //login 화면으로 돌아가기
+                    Intent intent = new Intent( MyPageActivity.this, LoginActivity.class );
+                    startActivity( intent );
+                    finish();
+                } else {
+                    Log.d("statuscode", "" + networkResponse.statusCode);
+                    Toast.makeText(getApplicationContext(), "서버에 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return headers;
+            }
+        };
+        RequestQueue requestQueue2 = Volley.newRequestQueue(MyPageActivity.this);
+        requestQueue2.add(IdRequest);
+
         favorite_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 //찜목록
                 Intent intent = new Intent( MyPageActivity.this, WishListActivity.class );
                 startActivity( intent );
+            }
+        });
+
+        review_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //인앱 리뷰 연결
+                ReviewManager manager = ReviewManagerFactory.create(MyPageActivity.this);
+                Task<ReviewInfo> request = manager.requestReviewFlow();
+                request.addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // We can get the ReviewInfo object
+                        ReviewInfo reviewInfo = task.getResult();
+                    } else {
+                        // There was some problem, log or handle the error code.
+                    }
+                });
             }
         });
 

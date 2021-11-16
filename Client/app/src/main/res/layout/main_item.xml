@@ -16,7 +16,7 @@
             <ImageView
                 android:id="@+id/mainImageView"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="250dp"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/sampleimage" />
 
@@ -24,14 +24,14 @@
                 android:id="@+id/mainTitleTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:gravity="center"
                 android:text="옥수수가 톡톡 콘치즈 김치볶음밥 만들기"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:fontFamily="@font/ssurround_air"
+                android:fontFamily="@font/ibm_plex"
                 android:textColor="#000000"
-                android:textSize="15sp"
+                android:textSize="16sp"
 
                 />
 

@@ -74,16 +74,16 @@
             app:srcCompat="@drawable/profile" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/idTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:layout_gravity="center_vertical"
 
-            android:text="닉네임님 반갑습니다."
-            android:fontFamily="@font/ssurround_air"
+            android:text=""
+            android:fontFamily="@font/ibm_plex"
             android:textColor="#000000"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
             app:layout_constraintTop_toBottomOf="@+id/view" />
@@ -124,13 +124,56 @@
             android:paddingRight="0dp"
             android:paddingBottom="0dp"
             android:text="찜 목록"
-            android:fontFamily="@font/ssurround_air"
-            android:textSize="15sp"
+            android:fontFamily="@font/ibm_plex"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view2"
             tools:ignore="MissingConstraints" />
     </LinearLayout>
+
+        <View
+            android:id="@+id/view7"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E5E5E5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/favorite_button" />
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+            <Button
+                android:id="@+id/review_button"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_height="55dp"
+                android:background="@drawable/gray_edit_text"
+                android:gravity="left|center_vertical"
+                android:layout_gravity="center_vertical"
+
+                android:paddingLeft="20dp"
+                android:paddingTop="0dp"
+                android:paddingRight="0dp"
+                android:paddingBottom="0dp"
+                android:text="앱 평가 남기기"
+                android:fontFamily="@font/ibm_plex"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.516"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view5"
+                tools:ignore="MissingConstraints" />
+        </LinearLayout>
     <View
         android:id="@+id/view5"
         android:layout_width="match_parent"
@@ -166,14 +209,16 @@
             android:paddingRight="0dp"
             android:paddingBottom="0dp"
             android:text="회원 탈퇴"
-            android:fontFamily="@font/ssurround_air"
-            android:textSize="15sp"
+            android:fontFamily="@font/ibm_plex"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.516"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view5"
             tools:ignore="MissingConstraints" />
     </LinearLayout>
+
+
 
     <View
         android:id="@+id/view3"
@@ -189,7 +234,7 @@
             android:id="@+id/view4"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="7"
+            android:layout_weight="5.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             />

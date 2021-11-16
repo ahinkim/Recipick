@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,6 +31,8 @@ import java.util.Map;
 public class AutoLoginActivity extends AppCompatActivity {
     private SharedPreferences preferences;
 
+    static RequestQueue requestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,16 +49,26 @@ public class AutoLoginActivity extends AppCompatActivity {
         headers.put("refreshToken", refreshToken);
 
         if ("".equals(accessToken)&& "".equals(refreshToken)) {
-            Intent intent1 = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(intent1);
-            finish();
+            Handler handler=new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //앱스플래쉬 보여주기
+                    Intent intent1 = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent1);
+                    finish();
+                }
+            },1000);
+
         } else {
 
             //url 받아오기
             MyApplication myApp = (MyApplication) getApplication();
             String url=myApp.getGlobalString();
             url += "/users/access";
-
+            if(requestQueue==null){
+                requestQueue=Volley.newRequestQueue(getApplicationContext());
+            }
             StringRequest TokenValidateRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -76,7 +89,9 @@ public class AutoLoginActivity extends AppCompatActivity {
                         MyApplication myApp = (MyApplication) getApplication();
                         String url=myApp.getGlobalString();
                         url += "/users/reissuance";
-
+                        if(requestQueue==null){
+                            requestQueue=Volley.newRequestQueue(getApplicationContext());
+                        }
                         StringRequest TokenReissueRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -110,16 +125,16 @@ public class AutoLoginActivity extends AppCompatActivity {
                                     //2. refresh token이 올바른 토큰 형태가 아닌 경우 412
                                     Log.d("statuscode2", "" + networkResponse.statusCode);
                                     Toast.makeText( getApplicationContext(), "저장된 회원정보에 오류가 발생하였습니다. 다시 로그인 해주세요.", Toast.LENGTH_SHORT ).show();
-
+                                    Intent intent2 = new Intent(getApplicationContext(), LoginActivity.class);
+                                    startActivity(intent2);
+                                    finish();
                                 }
                                 else{
                                     //서버 잘못되었을 때
                                     Log.d("statuscode2", "" + networkResponse.statusCode);
                                     Toast.makeText( getApplicationContext(), "서버에 오류가 발생하였습니다.", Toast.LENGTH_SHORT ).show();
                                 }
-                                Intent intent2 = new Intent(getApplicationContext(), LoginActivity.class);
-                                startActivity(intent2);
-                                finish();
+
                             }
                         }) {
                             @Override
@@ -144,10 +159,6 @@ public class AutoLoginActivity extends AppCompatActivity {
                         //서버 잘못되었을 때
                         Log.d("statuscode1", "" + networkResponse.statusCode);
                         Toast.makeText( getApplicationContext(), "서버에 오류가 발생하였습니다.", Toast.LENGTH_SHORT ).show();
-
-                        Intent intent2 = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(intent2);
-                        finish();
                     }
                 }
             }) {
@@ -156,7 +167,8 @@ public class AutoLoginActivity extends AppCompatActivity {
                     return headers;
                 }
             };
-            RequestQueue requestQueue = Volley.newRequestQueue(AutoLoginActivity.this);
+            TokenValidateRequest.setShouldCache(false);
+            TokenValidateRequest.setRetryPolicy(new DefaultRetryPolicy(0,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(TokenValidateRequest);
 
         }

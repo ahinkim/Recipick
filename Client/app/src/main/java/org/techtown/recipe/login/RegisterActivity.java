@@ -30,6 +30,7 @@ import org.techtown.recipe.R;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -39,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageButton exit_button;
     private AlertDialog dialog;
     private boolean validate = false;
+    static RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,20 @@ public class RegisterActivity extends AppCompatActivity {
                     dialog.show();
                     return;
                 }
+                //영어 소문자와 숫자 외에 다른 문자가 들어갔을 때
+                if(!Pattern.matches("^[0-9a-z]*$", userId)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("아이디에는 영문 소문자와 숫자만 사용 가능합니다.").setPositiveButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
+                //아이디에 숫자만 있을 때
+                if(Pattern.matches("^[0-9]*$",userId)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("아이디에는 영문 소문자가 반드시 포함되어야 합니다.").setPositiveButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
 
                 if(userId.length()<4){
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
@@ -88,6 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
                     dialog.show();
                     return;
                 }
+
 
 
                 //POST 요청
@@ -181,6 +198,29 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
+                //아이디에 영어 소문자와 숫자 외에 다른 문자가 들어갔을 때
+                if(!Pattern.matches("^[0-9a-z]*$", userId)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("아이디에는 영문 소문자와 숫자만 사용 가능합니다.").setPositiveButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
+
+                //아이디에 숫자만 있을 때
+                if(Pattern.matches("^[0-9]*$",userId)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("아이디에는 영문 소문자가 반드시 포함되어야 합니다.").setPositiveButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
+
+                //비밀번호에 한글이 들어갔을 때
+                if(Pattern.matches("^[가-힣]*$", password)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("비밀번호에는 영문, 숫자, 특수문자만 사용 가능합니다.").setPositiveButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
                 //아이디 글자수
                 if(userId.length()<4){
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
