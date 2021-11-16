@@ -12,9 +12,19 @@ urlpatterns = [
     path('users/login', userViews.login),
     path('users/access', userViews.access),
     path('users/reissuance', userViews.reissuance),
+    path('users/access', userViews.access),
+    path('users/access/id', userViews.accessToId),
 
-    path('recipe/defaultMain', recipeViews.main_list),
-    path('recipe/defaultRanking', recipeViews.ranking_list),
+    path('recipe/Main', recipeViews.main_list),
+    path('recipe/Ranking', recipeViews.ranking_list),
+
+    path('recipe/', recipeViews.recipe),
+    path('recipe/wishlist/', recipeViews.wishlist),
+    path('recipe/usergrade/', recipeViews.userRGrade),
+
+    path('user/recipelist', recipeViews.userRecipeList),
+    path('recipe/order/', recipeViews.recipeOrder),
+    path('recipe/search', recipeViews.search),
 
     path('auth', include('rest_framework.urls', namespace='rest_framework'))
 ]
