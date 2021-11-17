@@ -16,7 +16,7 @@
         <item name="windowNoTitle">true</item>
     </style>
     <style name="BottomNavigationViewTextStyle">
-        <item name="android:fontFamily">@font/ssurround_air</item>
+        <item name="android:fontFamily">@font/ibm_plex</item>
     </style>
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">#FEC89A</item>

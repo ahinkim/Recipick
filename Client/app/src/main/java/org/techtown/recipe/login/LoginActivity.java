@@ -35,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText login_id, login_password;
     private Button login_button, join_button;
 
+    static RequestQueue requestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -97,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText( getApplicationContext(), "로그인에 성공하셨습니다.", Toast.LENGTH_SHORT ).show();
                             Intent intent = new Intent( LoginActivity.this, MainActivity.class );
                             startActivity( intent );
+                            finish();
                         }catch (JSONException e) {
                             e.printStackTrace();
                         }

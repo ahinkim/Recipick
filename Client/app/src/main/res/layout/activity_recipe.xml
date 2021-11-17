@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -21,28 +22,19 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:weightSum="20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <View
-                android:id="@+id/view1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-            </View>
-
             <ImageButton
                 android:id="@+id/exit_button"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:layout_marginLeft="15dp"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
                 android:background="@android:color/transparent"
 
-                android:scaleType="fitXY"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/longarrow" />
@@ -52,7 +44,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="16"
+                android:layout_weight="1"
                 android:fontFamily="@font/dancing_script_bold"
 
                 android:gravity="center"
@@ -65,24 +57,16 @@
 
             <ImageButton
                 android:id="@+id/favorite_button"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:layout_marginRight="15dp"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
                 android:background="@android:color/transparent"
 
-                android:scaleType="fitXY"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/heart" />
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-            </View>
 
         </LinearLayout>
 
@@ -180,7 +164,7 @@
                 <View
                     android:id="@+id/view4"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="5dp"
                     android:background="#E5E5E5" />
 
                 <TextView
@@ -188,12 +172,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    android:fontFamily="@font/ssurround_air"
+                    android:fontFamily="@font/ibm_plex"
 
                     android:gravity="left"
                     android:text=" 재료와 양념 "
                     android:textColor="#000000"
-                    android:textSize="15sp" />
+                    android:textSize="16sp" />
 
                 <View
                     android:id="@+id/view4_1"
@@ -208,30 +192,104 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    android:fontFamily="@font/ssurround_air"
+                    android:fontFamily="@font/ibm_plex"
 
                     android:text=""
                     android:textColor="#000000"
-                    android:textSize="15sp" />
+                    android:textSize="16sp" />
 
                 <View
                     android:id="@+id/view5"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="5dp"
                     android:background="#E5E5E5" />
 
+                <TextView
+                    android:id="@+id/orderTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:fontFamily="@font/ibm_plex"
+
+                    android:gravity="left"
+                    android:text=" 조리 순서 "
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <View
+                    android:id="@+id/view5_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#E5E5E5" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/orderRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
+                    android:nestedScrollingEnabled="false"
+                    android:padding="15dp"/>
+
+                <View
+                    android:id="@+id/view6"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="#E5E5E5" />
+
+                <TextView
+                    android:id="@+id/gradeTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:fontFamily="@font/ibm_plex"
+
+                    android:gravity="left"
+                    android:text=" 레시피 평점 "
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <RatingBar
+                    android:id="@+id/middleRatingBar"
+                    android:theme="@style/RatingBar"
+                    style="@style/Widget.AppCompat.RatingBar.Indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="false"
+                    android:numStars="5"
+                    android:rating="0"
+                    android:stepSize="1"
+                    android:max="5"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:id="@+id/gradeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="15dp"
+                    android:fontFamily="@font/ibm_plex"
+
+                    android:layout_gravity="center"
+                    android:text="별을 눌러 레시피에 평점을 남겨주세요."
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <View
+                    android:id="@+id/view6_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#E5E5E5" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/gradeRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
+                    android:nestedScrollingEnabled="false"
+                    android:padding="15dp"/>
 
 
             </LinearLayout>

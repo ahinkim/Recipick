@@ -62,7 +62,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ViewHo
         }
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView favoriteImageView;
         TextView favoriteTitleTextView;
 

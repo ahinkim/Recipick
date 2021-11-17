@@ -43,6 +43,8 @@ public class RankingActivity extends AppCompatActivity {
     private RankingAdapter adapter;
     private RecyclerView recyclerView;
     private BottomNavigationView navigation;
+    static RequestQueue requestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +58,8 @@ public class RankingActivity extends AppCompatActivity {
 
         //헤더에 토큰 넣기
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("access", accessToken);
-        headers.put("refresh", refreshToken);
+        headers.put("accessToken", accessToken);
+        headers.put("refreshToken", refreshToken);
 
         //Recycler view 세팅
         recyclerView=findViewById(R.id.recyclerView);
@@ -98,7 +100,7 @@ public class RankingActivity extends AppCompatActivity {
         //url 받아오기
         MyApplication myApp = (MyApplication) getApplication();
         String url=myApp.getGlobalString();
-        url += "/recipe/defaultRanking";
+        url += "/recipe/Ranking";
 
         StringRequest DefaultRankingRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -113,10 +115,9 @@ public class RankingActivity extends AppCompatActivity {
                     for(int i=0;i<recipesArray.length();i++){
                         element=(JSONObject) recipesArray.opt(i);
 
-                        String rankNumber=element.optString("rank");
                         JSONObject rIdArray=element.optJSONObject("rId");
-
-                        items.add(new RankingItem(rankNumber
+                        String rank=Integer.toString(i+1);
+                        items.add(new RankingItem(rank
                                 ,rIdArray.optString("rId")
                                 ,rIdArray.optString("recipe_title")
                                 ,rIdArray.optString("menu_img")));

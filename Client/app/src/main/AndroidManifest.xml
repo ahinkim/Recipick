@@ -10,9 +10,9 @@ package="org.techtown.recipe">
     android:allowBackup="false"
     android:fullBackupOnly="false"
     android:fullBackupContent="false"
-    android:icon="@mipmap/ic_launcher"
-    android:label="Recipe"
-    android:roundIcon="@mipmap/ic_launcher_round"
+    android:icon="@mipmap/ic_recipick"
+    android:label="Recipick"
+    android:roundIcon="@mipmap/ic_recipick_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.Recipe">
     <activity android:name="org.techtown.recipe.login.AutoLoginActivity" android:exported="true">
@@ -22,14 +22,28 @@ package="org.techtown.recipe">
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
-    <activity android:name="org.techtown.recipe.main.MainActivity" android:exported="true"></activity>
+    <activity android:name="org.techtown.recipe.login.LoginActivity" android:exported="true">
+
+    </activity>
     <activity android:name="org.techtown.recipe.mypage.MyPageActivity" android:exported="true"></activity>
+    <activity android:name="org.techtown.recipe.main.MainActivity" android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.SEARCH" />
+        </intent-filter>
+    </activity>
     <activity android:name="org.techtown.recipe.login.RegisterActivity" android:exported="true"></activity>
-    <activity android:name="org.techtown.recipe.login.LoginActivity" android:exported="true"></activity>
     <activity android:name="org.techtown.recipe.ranking.RankingActivity" android:exported="true"></activity>
     <activity android:name="org.techtown.recipe.main.RecipeActivity" android:exported="true"></activity>
     <activity android:name="org.techtown.recipe.mypage.WishListActivity" android:exported="true"></activity>
     <activity android:name="org.techtown.recipe.mypage.WishRecipeActivity" android:exported="true"></activity>
+    <activity android:name="org.techtown.recipe.grade.GradeActivity" android:exported="true"></activity>
+    <activity android:name="org.techtown.recipe.grade.GradeModifyActivity" android:exported="true"></activity>
+    <activity android:name="org.techtown.recipe.search.SearchActivity" android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.SEARCH" />
+        </intent-filter>
+    </activity>
+
 
 </application>
 
