@@ -43,7 +43,7 @@ def getnerateRecipe(wishList):
       return ridList #list
 
   def randomRecipes(recipeData, collaborated,count) :
-    randlist = random.sample(list(collaborated.columns),count+10)
+    randlist = random.sample(list(collaborated.columns),count+50)
     ridList = []
     for item in randlist:
         if len(ridList) == 50: break
@@ -82,10 +82,13 @@ def getnerateRecipe(wishList):
     recipeList += randomRecipes(recipeData,collaborated,151-len(recipeList))
   # 오버 -> 150개 
   else : 
-    weight = [30,25,20,15,10]
-    for item in range(5) :
-      recipeList += random.sample(midList[item],weight[item])
-    recipeList += randomRecipes(recipeData,collaborated,100)
+    try:
+      weight = [30,25,20,15,10]
+      for item in range(5) :
+        recipeList += random.sample(midList[item],weight[item])
+      recipeList += randomRecipes(recipeData,collaborated,50)
+    except:
+      recipeList += randomRecipes(recipeData,collaborated,150)
 
 
 
