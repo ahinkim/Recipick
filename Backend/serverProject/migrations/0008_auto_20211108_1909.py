@@ -21,13 +21,13 @@ class Migration(migrations.Migration):
             name='description',
             field=models.CharField(max_length=200),
         ),
-        migrations.CreateModel(
-            name='UserPreferredCategories',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('category', models.CharField(max_length=100)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('userId', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='usersInCategory', to='serverProject.User')),
-            ],
-        ),
+        # migrations.CreateModel(
+        #     name='UserPreferredCategories',
+        #     fields=[
+        #         ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        #         ('category', models.CharField(max_length=100)),
+        #         ('created_at', models.DateTimeField(auto_now_add=True)),
+        #         ('userId', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='usersInCategory', to='serverProject.User')),
+        #     ],
+        # ),
     ]

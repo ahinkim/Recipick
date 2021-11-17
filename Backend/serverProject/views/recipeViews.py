@@ -30,6 +30,8 @@ import jwt
 import os
 import sys
 
+import random
+
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))))
 
 from Bigdata.bigdata.recipesGenerate import getnerateRecipe
@@ -54,13 +56,13 @@ def main_list(request):
                     query_set = UserPreferredCategories.objects.filter(userId=userId).all()
                     serializer = UserPreferCategoryListSerializer(query_set, many=True)
                     userPreferCategoryList = []
-                    
+
                     for Category in serializer.data:
                         userPreferCategoryList.append(Category['category'])
-
+     
                     rId_list = getnerateRecipe(userPreferCategoryList)
-                    
-                    query_set = R_info.objects.filter(rId__in=rId_list).all()
+
+                    query_set = R_info.objects.filter(rId__in=rId_list).all().order_by('?')
                     serializer = RecipeSerializer(query_set, many=True)
                     return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
 
@@ -84,7 +86,7 @@ def main_list(request):
 def ranking_list(request):
     if request.method == 'GET':
         try:
-            rankObj = RankingViews.objects.all().order_by('-views', 'id')[:50]
+            rankObj = RankingViews.objects.all().order_by('-views', 'id')[:20]
             serializer = RankingViewsSerializer(rankObj, many=True)
             return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
 

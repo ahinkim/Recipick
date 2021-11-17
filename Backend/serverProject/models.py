@@ -23,7 +23,7 @@ class R_info(models.Model): #Recipe information Table
 class R_order(models.Model): #Recipe Order Table
     rId =  models.ForeignKey('R_info', on_delete=models.CASCADE)
     recipe_order = models.IntegerField()
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=500)
 
 class R_grade(models.Model): #Recipe grade Table
     userId = models.ForeignKey('User', on_delete=models.CASCADE)
@@ -36,10 +36,6 @@ class R_grade(models.Model): #Recipe grade Table
 
 class MainDefault(models.Model):
     rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'mainRecipes')
-
-# class RankingDefault(models.Model): 
-#     rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'rankingRecipes')
-#     rank = models.IntegerField(auto_created=True, null=False)
 
 class WishList(models.Model):
     userId = models.ForeignKey('User', on_delete=models.CASCADE)
@@ -56,7 +52,16 @@ class RankingViews(models.Model): #랭킹 조회수 테이블
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class TenThousand_R_grade(models.Model): #만개의 레시피 평점 테이블
+    userId = models.CharField(max_length=100)
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE)
+    grade = models.IntegerField()
+    comment = models.TextField(null=True)  #평점 길이제한 x
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 class UserRecipeList(models.Model): #사용자가 등록한 레시피 리스트
     userId = models.ForeignKey('User', on_delete=models.CASCADE, related_name = 'users')
     rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'userRecipes')
+
 
