@@ -59,9 +59,9 @@ def main_list(request):
 
                     for Category in serializer.data:
                         userPreferCategoryList.append(Category['category'])
-     
+        
                     rId_list = getnerateRecipe(userPreferCategoryList)
-
+              
                     query_set = R_info.objects.filter(rId__in=rId_list).all().order_by('?')
                     serializer = RecipeSerializer(query_set, many=True)
                     return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
