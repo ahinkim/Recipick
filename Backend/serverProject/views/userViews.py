@@ -11,8 +11,18 @@ from pytz import timezone
 
 import json
 from django.core.exceptions import ImproperlyConfigured
+
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))))
+
+from ..serializers import UserPreferCategorySerializer
+
+from Bigdata.bigdata.recipesGenerate import getnerateRecipe
+
 with open("../secret.json") as f:
     secrets = json.loads(f.read())
+
 
 #외부에 저장한 SECRETKEY 불러오는 함수
 def get_secret(setting, secrets=secrets):
@@ -32,6 +42,17 @@ def user_list(request):
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
+            userId = search_userId
+            defaultList = ['떡볶이','닭볶음탕','부추전','돼지김치찌개','스팸김치볶음밥']
+
+            for recipe_category in defaultList:                      
+                data = {"userId": userId, "category": recipe_category}
+                serializer = UserPreferCategorySerializer(data=data)
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    return JsonResponse(serializer.errors, status=401)
+
             return JsonResponse({'message': 'SUCCESS'}, status=200)
         return JsonResponse(serializer.errors, status=401)
 
