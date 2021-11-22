@@ -46,12 +46,11 @@ def getnerateRecipe(wishList):
     randlist = random.sample(list(collaborated.columns),count+50)
     ridList = []
     for item in randlist:
-        if len(ridList) == 50: break
+        if len(ridList) == count : break
         datas = recipeData['recipe_category'] == item
         newRecipes = recipeData[datas]
         newRid = newRecipes['rId']
         newRid = newRid.to_list()
-
         if not newRid:
           continue
         else :
@@ -77,18 +76,27 @@ def getnerateRecipe(wishList):
   # 조건에 따른 가중치
 
   # 부족 -> 100개 
-  if count < 100 :
+  if count <= 75 :
     recipeList = sum(midList,[])
-    recipeList += randomRecipes(recipeData,collaborated,151-len(recipeList))
+    recipeList += randomRecipes(recipeData,collaborated,100 - len(recipeList))
+
+  elif 75 < count and count <= 100 :
+    recipeList = sum(midList,[])
+    recipeList += randomRecipes(recipeData,collaborated,120-len(recipeList))
+
   # 오버 -> 150개 
-  else : 
-    try:
-      weight = [30,25,20,15,10]
-      for item in range(5) :
+  # 개수가 모자를 수 있으니 비율로 정산할 것!
+  else :
+    weight = [30,25,20,15,10] 
+    for item in range(5):
+      try:
         recipeList += random.sample(midList[item],weight[item])
-      recipeList += randomRecipes(recipeData,collaborated,50)
-    except:
-      recipeList += randomRecipes(recipeData,collaborated,150)
+      except:
+        #안에 없을 경우 어떻게 할 것인가.
+        recipeList += midList[item]
+    if len(recipeList) <= 125 :
+      recipeList += randomRecipes(recipeData,collaborated,125-len(recipeList))
+        
 
 
 
@@ -98,7 +106,7 @@ def getnerateRecipe(wishList):
   # print(recipeList)
   return recipeList
 
-# myWish = ["소고기말이주먹밥","가나슈마카롱","가자미구이","닭갈비덮밥","새우양파튀김"] #중간
+# myWish = ["소고기말이주먹밥","가나슈마카롱","스팸김치볶음밥","닭갈비덮밥","새우양파튀김"] #중간
 # myWish = ['떡볶이','닭볶음탕','부추전','돼지김치찌개','스팸김치볶음밥'] # 최상
 # myWish = ['LA찹쌀떡','가시오이부추무침','흑임자연근샐러드','황치즈쿠키','황치즈머핀'] #최악
 # getnerateRecipe(myWish)
