@@ -35,22 +35,27 @@ def getnerateRecipe(wishList):
   def is_recipes(recipeData,categoryNames): #list
       ridList = []
       for item in categoryNames:
+        try:
           datas = recipeData['recipe_category'] == item
           newRecipes = recipeData[datas]
           newRid = newRecipes['rId']
           newRid = newRid.to_list()
           ridList += newRid
+        except:
+          print("Error Recipe")
       return ridList #list
 
   def randomRecipes(recipeData, collaborated,count) :
     randlist = random.sample(list(collaborated.columns),count+50)
     ridList = []
     for item in randlist:
+      
         if len(ridList) == count : break
         datas = recipeData['recipe_category'] == item
         newRecipes = recipeData[datas]
         newRid = newRecipes['rId']
         newRid = newRid.to_list()
+
         if not newRid:
           continue
         else :
