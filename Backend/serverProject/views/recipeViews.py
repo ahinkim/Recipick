@@ -32,8 +32,8 @@ import sys
 
 import random
 
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))))
-
+#sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))))
+sys.path.append(".")
 from Bigdata.bigdata.recipesGenerate import getnerateRecipe
 
 from django.db.models import Q

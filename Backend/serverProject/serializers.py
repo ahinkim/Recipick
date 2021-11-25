@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = R_info
-        fields = ['rId', 'recipe_title', 'serving', 'cookingTime', 'difficult', 'recipe_source', 'menu_img', 'recipe_category']
+        fields = ['rId', 'recipe_title', 'serving', 'cookingTime', 'difficult', 'recipe_source', 'menu_img', 'recipe_category', 'recipe_url']
 
 class MainDefaultSerializer(serializers.ModelSerializer):
     class Meta:

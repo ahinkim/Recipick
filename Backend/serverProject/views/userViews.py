@@ -18,7 +18,7 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(
 
 from ..serializers import UserPreferCategorySerializer
 
-from Bigdata.bigdata.recipesGenerate import getnerateRecipe
+# from Bigdata.bigdata.recipesGenerate import getnerateRecipe
 
 with open("../secret.json") as f:
     secrets = json.loads(f.read())

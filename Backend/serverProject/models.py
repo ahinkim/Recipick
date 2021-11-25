@@ -19,6 +19,7 @@ class R_info(models.Model): #Recipe information Table
     recipe_source = models.CharField(max_length=100)
     menu_img = models.CharField(max_length=100)
     recipe_category = models.CharField(max_length=100, null=True)
+    recipe_url = models.CharField(max_length=100, default = "")
 
 class R_order(models.Model): #Recipe Order Table
     rId =  models.ForeignKey('R_info', on_delete=models.CASCADE)
