@@ -61,7 +61,7 @@ def main_list(request):
                         userPreferCategoryList.append(Category['category'])
         
                     rId_list = getnerateRecipe(userPreferCategoryList)
-              
+                    
                     query_set = R_info.objects.filter(rId__in=rId_list).all().order_by('?')
                     serializer = RecipeSerializer(query_set, many=True)
 
