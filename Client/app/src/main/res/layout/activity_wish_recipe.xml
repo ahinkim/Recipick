@@ -38,7 +38,7 @@
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/longarrow" />
+                app:srcCompat="@drawable/longarrow_button" />
 
             <TextView
                 android:id="@+id/textView"
@@ -67,7 +67,7 @@
                 android:background="@android:color/transparent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/trashcan"
+                app:srcCompat="@drawable/trashcan_button"
                 />
 
         </LinearLayout>
@@ -162,6 +162,30 @@
                         android:textSize="15sp" />
 
                 </LinearLayout>
+
+                <View
+                    android:id="@+id/view3_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="#E5E5E5" />
+
+                <Button
+                    android:id="@+id/recipe_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/long_button"
+                    android:fontFamily="@font/ibm_plex"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="출처 '만개의 레시피'에서 더 자세히 보기"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/join_pwck"
+                    tools:ignore="MissingConstraints" />
 
                 <View
                     android:id="@+id/view4"

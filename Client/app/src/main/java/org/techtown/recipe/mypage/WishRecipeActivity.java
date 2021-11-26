@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -44,6 +45,7 @@ import org.techtown.recipe.main.MainItem;
 import org.techtown.recipe.main.OrderAdapter;
 import org.techtown.recipe.main.OrderItem;
 import org.techtown.recipe.main.RecipeActivity;
+import org.techtown.recipe.main.RecipeWebViewActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +71,8 @@ public class WishRecipeActivity extends AppCompatActivity {
 
     private ImageButton exit_button;
     private ImageButton delete_button;
+
+    private Button recipe_button;
 
     static RequestQueue requestQueue;
 
@@ -100,6 +104,7 @@ public class WishRecipeActivity extends AppCompatActivity {
 
         exit_button = findViewById(R.id.exit_button);
         delete_button=findViewById(R.id.delete_button);
+        recipe_button=findViewById(R.id.recipe_button);
 
         //Recycler view 세팅
         orderRecyclerView = findViewById(R.id.orderRecyclerView);
@@ -114,6 +119,7 @@ public class WishRecipeActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String modify_RId = intent.getStringExtra("modify_RId");
+        String recipe_url=intent.getStringExtra("recipe_url");
 
         //url 받아오기
         MyApplication myApp = (MyApplication) getApplication();
@@ -463,6 +469,17 @@ public class WishRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        recipe_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( WishRecipeActivity.this, RecipeWebViewActivity.class );
+
+                intent.putExtra("recipe_url",recipe_url);
+
+                startActivity( intent );
             }
         });
 

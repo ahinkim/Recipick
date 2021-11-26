@@ -2,10 +2,13 @@ package org.techtown.recipe.main;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -70,6 +73,8 @@ public class RecipeActivity extends AppCompatActivity {
     private ImageButton exit_button;
     private ImageButton favorite_button;
 
+    private Button recipe_button;
+
     static RequestQueue requestQueue;
 
     @Override
@@ -100,6 +105,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         exit_button = findViewById(R.id.exit_button);
         favorite_button = findViewById(R.id.favorite_button);
+        recipe_button=findViewById(R.id.recipe_button);
 
         //Recycler view 세팅
         orderRecyclerView = findViewById(R.id.orderRecyclerView);
@@ -114,6 +120,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String modify_RId = intent.getStringExtra("modify_RId");
+        String recipe_url=intent.getStringExtra("recipe_url");
 
         //url 받아오기
         MyApplication myApp = (MyApplication) getApplication();
@@ -463,6 +470,18 @@ public class RecipeActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        recipe_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( RecipeActivity.this, RecipeWebViewActivity.class );
+
+                intent.putExtra("recipe_url",recipe_url);
+
+                startActivity( intent );
+            }
+        });
+
 
         //찜하기
         favorite_button.setOnClickListener(new View.OnClickListener() {

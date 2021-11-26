@@ -1,5 +1,6 @@
 package org.techtown.recipe.search;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.techtown.recipe.MyApplication;
 import org.techtown.recipe.R;
+import org.techtown.recipe.main.MainActivity;
 import org.techtown.recipe.main.RecipeActivity;
 import org.techtown.recipe.mypage.OnWishListItemClickListener;
 import org.techtown.recipe.mypage.WishListAdapter;
@@ -57,6 +59,9 @@ public class SearchActivity extends AppCompatActivity {
         headers.put("accessToken", accessToken);
         headers.put("refreshToken", refreshToken);
 
+        ProgressDialog dialog = ProgressDialog.show(SearchActivity.this, "",
+                "검색 결과를 불러오고 있는 중입니다.", true);
+
         //버튼 세팅
         setContentView(R.layout.activity_search);
         exit_button = findViewById(R.id.exit_button);
@@ -65,8 +70,7 @@ public class SearchActivity extends AppCompatActivity {
         //검색어 받아오기
         Intent intent = getIntent();
         String searchWord = intent.getStringExtra("searchWord");
-        searchView.setQuery(searchWord,true);//검색창에 검색어 넣는것. 확인하기!!!!!!!!!!!
-
+        searchView.setQuery(searchWord,true);//검색창에 검색어 넣는것.
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -130,10 +134,12 @@ public class SearchActivity extends AppCompatActivity {
                     element = (JSONObject) wishlistArray.opt(i);
                     items.add(new WishListItem(element.optString("rId")
                             , element.optString("recipe_title")
-                            , element.optString("menu_img")));
+                            , element.optString("menu_img")
+                            ,element.optString("recipe_url")));
                 }
                 adapter.setItems(items);
                 adapter.notifyDataSetChanged();
+                dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -164,10 +170,12 @@ public class SearchActivity extends AppCompatActivity {
                 WishListItem item = adapter.getItem(position);
 
                 String modify_RId = item.getRId();
+                String recipe_url=item.getRecipe_url();
 
                 Intent intent = new Intent(SearchActivity.this, RecipeActivity.class);
 
                 intent.putExtra("modify_RId", modify_RId);
+                intent.putExtra("recipe_url",recipe_url);
 
                 startActivity(intent);
                 //finish();

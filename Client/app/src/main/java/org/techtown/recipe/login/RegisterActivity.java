@@ -296,6 +296,8 @@ public class RegisterActivity extends AppCompatActivity {
                 RequestQueue requestQueue = Volley.newRequestQueue(RegisterActivity.this);
                 requestQueue.add(RegisterRequest);
 
+                overridePendingTransition(0,0);
+                finish();
             }
         });
 

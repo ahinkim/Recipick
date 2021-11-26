@@ -43,7 +43,7 @@ package="org.techtown.recipe">
             <action android:name="android.intent.action.SEARCH" />
         </intent-filter>
     </activity>
-
+    <activity android:name="org.techtown.recipe.main.RecipeWebViewActivity" android:exported="true"></activity>
 
 </application>
 

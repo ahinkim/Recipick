@@ -66,10 +66,17 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <LinearLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="12">
+            android:layout_weight="12"
+            android:id="@+id/swiperefreshlayout"
+            >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -77,7 +84,7 @@
                 android:layout_height="match_parent"
                 />
         </LinearLayout>
-
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"

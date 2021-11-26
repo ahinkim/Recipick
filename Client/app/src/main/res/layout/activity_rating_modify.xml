@@ -38,7 +38,7 @@
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/longarrow" />
+                app:srcCompat="@drawable/longarrow_button" />
 
             <TextView
                 android:id="@+id/textView"
@@ -67,7 +67,7 @@
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/save" />
+                app:srcCompat="@drawable/save_button" />
 
             <ImageButton
                 android:id="@+id/delete_button"
@@ -80,7 +80,7 @@
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/trashcan" />
+                app:srcCompat="@drawable/trashcan_button" />
 
         </LinearLayout>
 
