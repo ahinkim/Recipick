@@ -13,12 +13,12 @@ django-rest-auth==0.9.5
 django-rest-authtoken==2.1.4
 djangorestframework==3.10.0
 djangorestframework-jwt==1.11.0
-djangorestframework-simplejwt==5.0.0
+djangorestframework-simplejwt==5.0.0 #x
 filelock==3.3.1
 idna==3.3
 jwt==1.3.1
 mysql-connector-python==8.0.27
-mysqlclient==2.0.3
+mysqlclient==2.0.3 #x
 oauthlib==3.1.1
 platformdirs==2.4.0
 pycparser==2.20

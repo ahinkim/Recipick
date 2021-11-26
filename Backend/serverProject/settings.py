@@ -140,7 +140,7 @@ DATABASES = {
         'NAME': 'hooareyul',
         'USER': 'root',
         'PASSWORD': get_secret("DB_PW"),
-        'HOST': '127.0.0.1',
+        'HOST': '127.0.0.1',#34.64.167.182
         'PORT': '3306',
     }
 }
