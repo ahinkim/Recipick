@@ -33,7 +33,7 @@ class MainDefaultSerializer(serializers.ModelSerializer):
 class WishSerializer(serializers.ModelSerializer):
     class Meta:
         model = R_info
-        fields = ['rId', 'recipe_title', 'menu_img']
+        fields = ['rId', 'recipe_title', 'menu_img', 'recipe_url']
 
 
 class userWishListSerializer(serializers.ModelSerializer):

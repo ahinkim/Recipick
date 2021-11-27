@@ -25,6 +25,7 @@ urlpatterns = [
     path('user/recipelist', recipeViews.userRecipeList),
     path('recipe/order/', recipeViews.recipeOrder),
     path('recipe/search', recipeViews.search),
+    path('recipe/index', recipeViews.index),
 
     path('auth', include('rest_framework.urls', namespace='rest_framework'))
 ]

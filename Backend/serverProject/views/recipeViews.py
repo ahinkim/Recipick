@@ -42,6 +42,26 @@ from django.db.models import Count
 
 #main페이지 유저 맞춤형 조회 or default page 조회
 import asyncio
+
+#날씨 api
+# 2,3,5 비
+# 6 눈
+# 7,8 구름많음
+# 800, 801 맑음
+
+from django.shortcuts import render
+import requests
+
+@csrf_exempt
+def index(request):
+    if request.method == 'GET':
+        #url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=c63b4dac86f05fedf45a18dc9346e9a2'
+        url = 'http://api.openweathermap.org/data/2.5/weather?lat=37.541&lon=126.986&appid=c63b4dac86f05fedf45a18dc9346e9a2'
+        city_weather = requests.get(url).json() #request the API data and convert the JSON to Python data types
+        print(city_weather)
+        return JsonResponse({"message": "SUCCESS"}, status = 200) #returns the index.html template
+
+
 @csrf_exempt
 def main_list(request):
     if request.method == 'GET':
