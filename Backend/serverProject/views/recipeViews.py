@@ -10,6 +10,10 @@ from ..models import R_grade
 from ..models import R_order
 from ..models import UserPreferredCategories
 from ..models import RankingViews
+from ..models import CloudyRecipes
+from ..models import RainyRecipes
+from ..models import SnowyRecipes
+from ..models import SunnyRecipes
 
 from ..serializers import RecipeSerializer
 from ..serializers import MainDefaultSerializer
@@ -21,6 +25,11 @@ from ..serializers import R_OrderSerializer
 from ..serializers import UserPreferCategorySerializer
 from ..serializers import UserPreferCategoryListSerializer
 from ..serializers import RankingViewsSerializer
+
+from ..serializers import CloudyRecipesSerializer
+from ..serializers import RainyRecipesSerializer
+from ..serializers import SnowyRecipesSerializer
+from ..serializers import SunnyRecipesSerializer
 
 from rest_framework.parsers import JSONParser
 
@@ -44,23 +53,73 @@ from django.db.models import Count
 import asyncio
 
 #날씨 api
-# 2,3,5 비
-# 6 눈
-# 7,8 구름많음
+# 2xx,3xx,5xx 비
+# 6xx 눈
+# 7xx,8xx 구름많음
 # 800, 801 맑음
 
 from django.shortcuts import render
 import requests
 
 @csrf_exempt
-def index(request):
-    if request.method == 'GET':
-        #url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=c63b4dac86f05fedf45a18dc9346e9a2'
-        url = 'http://api.openweathermap.org/data/2.5/weather?lat=37.541&lon=126.986&appid=c63b4dac86f05fedf45a18dc9346e9a2'
-        city_weather = requests.get(url).json() #request the API data and convert the JSON to Python data types
-        print(city_weather)
-        return JsonResponse({"message": "SUCCESS"}, status = 200) #returns the index.html template
+def weather(request):
+    if request.method == 'POST':
+        try:
+            data = JSONParser().parse(request)
+            lat = data['lat']
+            lon = data['lon']
+            
+            url = 'http://api.openweathermap.org/data/2.5/weather?lat=%d&lon=%d&appid=c63b4dac86f05fedf45a18dc9346e9a2'%(lat,lon)
+            city_weather = requests.get(url).json() #request the API data and convert the JSON to Python data types
 
+            weather_id = city_weather['weather'][0]['id']
+
+            if weather_id >= 200 and weather_id < 600:
+                print("비")
+                try:
+                    rankObj = RainyRecipes.objects.all().order_by('?')[:10]
+                    serializer = RainyRecipesSerializer(rankObj, many=True)
+                    return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
+
+                except:
+                    return JsonResponse({"message":"SERVER ERROR"}, status=500)
+
+            elif weather_id < 700:
+                print("눈")
+                try:
+                    rankObj = SnowyRecipes.objects.all().order_by('?')[:10]
+                    serializer = SnowyRecipesSerializer(rankObj, many=True)
+                    return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
+
+                except:
+                    return JsonResponse({"message":"SERVER ERROR"}, status=500)
+
+            elif weather_id == 800 or weather_id == 801:
+                print("맑음")
+                try:
+                    rankObj = SunnyRecipes.objects.all().order_by('?')[:10]
+                    serializer = SunnyRecipesSerializer(rankObj, many=True)
+                    return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
+
+                except:
+                    return JsonResponse({"message":"SERVER ERROR"}, status=500)
+                    
+            elif weather_id < 900:
+                print("구름많음")
+                try:
+                    rankObj = CloudyRecipes.objects.all().order_by('?')[:10]
+                    serializer = CloudyRecipesSerializer(rankObj, many=True)
+                    return JsonResponse({"recipes": serializer.data}, safe=False, status=200)
+
+                except:
+                    return JsonResponse({"message":"SERVER ERROR"}, status=500)
+                
+        
+        except:
+            return JsonResponse({"message":"SERVER ERROR"}, status=500)
+            
+
+        
 
 @csrf_exempt
 def main_list(request):

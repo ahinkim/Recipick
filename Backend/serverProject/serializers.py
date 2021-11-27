@@ -11,6 +11,11 @@ from .models import R_order
 from .models import UserPreferredCategories
 from .models import RankingViews
 
+from .models import CloudyRecipes
+from .models import RainyRecipes
+from .models import SnowyRecipes
+from .models import SunnyRecipes
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -83,3 +88,40 @@ class RankingViewsSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         self.fields['rId'] =  RecipeSerializer(read_only=True)
         return super(RankingViewsSerializer, self).to_representation(instance)
+
+
+class CloudyRecipesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CloudyRecipes
+        fields = ['rId']
+
+    def to_representation(self, instance):
+        self.fields['rId'] =  RecipeSerializer(read_only=True)
+        return super(CloudyRecipesSerializer, self).to_representation(instance)
+
+class RainyRecipesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RainyRecipes
+        fields = ['rId']
+
+    def to_representation(self, instance):
+        self.fields['rId'] =  RecipeSerializer(read_only=True)
+        return super(RainyRecipesSerializer, self).to_representation(instance)
+
+class SnowyRecipesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SnowyRecipes
+        fields = ['rId']
+
+    def to_representation(self, instance):
+        self.fields['rId'] =  RecipeSerializer(read_only=True)
+        return super(SnowyRecipesSerializer, self).to_representation(instance)
+
+class SunnyRecipesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SunnyRecipes
+        fields = ['rId']
+
+    def to_representation(self, instance):
+        self.fields['rId'] =  RecipeSerializer(read_only=True)
+        return super(SunnyRecipesSerializer, self).to_representation(instance)

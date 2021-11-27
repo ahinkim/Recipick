@@ -66,3 +66,15 @@ class UserRecipeList(models.Model): #사용자가 등록한 레시피 리스트
     rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'userRecipes')
 
 
+class CloudyRecipes(models.Model):
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'cloudyRecipes')
+
+class RainyRecipes(models.Model):
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'rainyRecipes')
+
+class SnowyRecipes(models.Model):
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'snowyRecipes')
+
+class SunnyRecipes(models.Model):
+    rId = models.ForeignKey('R_info', on_delete=models.CASCADE, related_name = 'sunnyRecipes')
+
