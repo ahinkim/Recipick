@@ -10,7 +10,7 @@ def getnerateRecipe(wishList):
   # 서버기준
   recipePath = str(Path.cwd().parent) + r"/Bigdata/bigdata/RecipeData.csv"
   collaboratedPath = str(Path.cwd().parent) + r"/Bigdata/bigdata/collaborated.csv"
-
+  # recipePath = "./recipeData.csv"
   # 로컬기준
   # recipePath = str(Path.cwd()) + "/Bigdata/bigdata/RecipeData.csv"
   # collaboratedPath = str(Path.cwd()) + "/Bigdata/bigdata/collaborated.csv"
