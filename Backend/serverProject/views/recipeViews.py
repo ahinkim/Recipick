@@ -68,7 +68,7 @@ def weather(request):
             data = JSONParser().parse(request)
             lat = data['lat']
             lon = data['lon']
-            
+            print(lat, lon)
             url = 'http://api.openweathermap.org/data/2.5/weather?lat=%d&lon=%d&appid=c63b4dac86f05fedf45a18dc9346e9a2'%(lat,lon)
             city_weather = requests.get(url).json() #request the API data and convert the JSON to Python data types
 
