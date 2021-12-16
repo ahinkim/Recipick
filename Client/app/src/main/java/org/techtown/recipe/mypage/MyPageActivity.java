@@ -53,7 +53,6 @@ public class MyPageActivity extends AppCompatActivity {
     Button withdraw_button;
     Button favorite_button;
     TextView idTextView;
-    Button review_button;
 
     private BottomNavigationView navigation;
 
@@ -78,7 +77,6 @@ public class MyPageActivity extends AppCompatActivity {
         withdraw_button=findViewById(R.id.withdraw_button);
         favorite_button=findViewById(R.id.favorite_button);
         idTextView=findViewById(R.id.idTextView);
-        review_button=findViewById(R.id.review_button);
 
         navigation = findViewById( R.id.navigation );
 
@@ -252,23 +250,6 @@ public class MyPageActivity extends AppCompatActivity {
                 //찜목록
                 Intent intent = new Intent( MyPageActivity.this, WishListActivity.class );
                 startActivity( intent );
-            }
-        });
-
-        review_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //인앱 리뷰 연결
-                ReviewManager manager = ReviewManagerFactory.create(MyPageActivity.this);
-                Task<ReviewInfo> request = manager.requestReviewFlow();
-                request.addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // We can get the ReviewInfo object
-                        ReviewInfo reviewInfo = task.getResult();
-                    } else {
-                        // There was some problem, log or handle the error code.
-                    }
-                });
             }
         });
 

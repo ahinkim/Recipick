@@ -33,26 +33,25 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="@font/dancing_script_bold"
+                    android:gravity="center"
                     android:text="Recipick"
                     android:textColor="#FEC89A"
-                    android:gravity="center"
-                    android:textSize="25sp"
-                    android:fontFamily="@font/dancing_script_bold"
-                    />
+                    android:textSize="25sp" />
 
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/search_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingBottom="5dp"
                     android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     app:iconifiedByDefault="true"
-                    app:queryHint="검색어를 입력해주세요"
-
-                    app:queryBackground="@drawable/gray_search_view"
                     app:layout_constraintBottom_toBottomOf="parent"
+
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:queryBackground="@drawable/gray_search_view"
+                    app:queryHint="검색어를 입력해주세요" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
 
@@ -66,17 +65,93 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <LinearLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefreshlayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="12">
+            android:layout_weight="12"
+            android:orientation="vertical"
+            >
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
-        </LinearLayout>
+                android:fillViewport="true"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="5dp"
+                        android:fontFamily="@font/ibm_plex"
+                        android:gravity="left"
+                        android:textStyle="bold"
+
+                        android:text="오늘 날씨에 이런 레시피는 어떠세요?"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/weather_recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"
+                            />
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="#E5E5E5"
+                        app:layout_constraintBottom_toBottomOf="@+id/linearLayout1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="5dp"
+                        android:fontFamily="@font/ibm_plex"
+                        android:gravity="left"
+                        android:textStyle="bold"
+
+                        android:text="취향에 딱 맞는 레시피를 추천해드릴게요."
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        >
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
@@ -85,12 +160,12 @@
             android:layout_gravity="start"
             android:layout_weight="1"
 
-            app:itemTextAppearanceActive="@style/BottomNavigationViewTextStyle"
-            app:itemTextAppearanceInactive="@style/BottomNavigationViewTextStyle"
-            app:menu="@menu/bottom_menu"
             app:backgroundTint="@color/white"
             app:itemIconTint="@drawable/bottom_menu_color"
+            app:itemTextAppearanceActive="@style/BottomNavigationViewTextStyle"
+            app:itemTextAppearanceInactive="@style/BottomNavigationViewTextStyle"
             app:itemTextColor="@drawable/bottom_menu_color"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/bottom_menu" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

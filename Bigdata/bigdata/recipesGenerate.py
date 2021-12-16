@@ -102,9 +102,6 @@ def getnerateRecipe(wishList):
     if len(recipeList) <= 125 :
       recipeList += randomRecipes(recipeData,collaborated,125-len(recipeList))
         
-
-
-
   #셔플
   random.shuffle(recipeList)
   # print(len(recipeList))

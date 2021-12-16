@@ -41,7 +41,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:gravity="center"
         android:textColor="#000000"
         android:textSize="16sp"
@@ -57,15 +56,26 @@
         android:padding="15dp"
         android:scaleType="centerInside"
         />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:gravity="center"
         android:textColor="#000000"
         android:textSize="16sp"
         android:lineSpacingExtra="4dp"
         android:text="레시피를 선택할수록 더 마음에\n드는 레시피를 만날 수 있어요!"
+        android:fontFamily="@font/ibm_plex"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:lineSpacingExtra="4dp"
+        android:text="모든 이미지와 텍스트의 저작권은 '만개의 레시피'에게 있으며 외부로의 유포를 금합니다."
         android:fontFamily="@font/ibm_plex"
         />
 

@@ -99,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText( getApplicationContext(), "로그인에 성공하셨습니다.", Toast.LENGTH_SHORT ).show();
                             Intent intent = new Intent( LoginActivity.this, MainActivity.class );
                             startActivity( intent );
+                            overridePendingTransition(0,0);
                             finish();
                         }catch (JSONException e) {
                             e.printStackTrace();
@@ -127,7 +128,6 @@ public class LoginActivity extends AppCompatActivity {
                 };
                 RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
                 requestQueue.add(LoginRequest);
-
             }
         });
     }

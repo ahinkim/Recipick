@@ -105,8 +105,6 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-
-
                 //POST 요청
                 //url 받아오기
                 MyApplication myApp = (MyApplication) getApplication();
@@ -265,6 +263,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                         Intent intent = new Intent( RegisterActivity.this, LoginActivity.class );
                         startActivity( intent );
+                        overridePendingTransition(0,0);
+                        finish();
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -295,7 +295,6 @@ public class RegisterActivity extends AppCompatActivity {
                 };
                 RequestQueue requestQueue = Volley.newRequestQueue(RegisterActivity.this);
                 requestQueue.add(RegisterRequest);
-
             }
         });
 

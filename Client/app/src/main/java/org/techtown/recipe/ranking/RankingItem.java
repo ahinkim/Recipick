@@ -5,12 +5,14 @@ public class RankingItem {
     String rId;//레시피 아이디
     String recipe_title;//레시피 제목
     String menu_img;//레시피 사진
+    String recipe_url;
 
-    public RankingItem(String rank, String rId, String recipe_title, String menu_img){
+    public RankingItem(String rank, String rId, String recipe_title, String menu_img, String recipe_url){
         this.rank=rank;
         this.rId=rId;
         this.recipe_title=recipe_title;
         this.menu_img=menu_img;
+        this.recipe_url=recipe_url;
     }
 
     public String getRank(){return rank;}
@@ -26,11 +28,11 @@ public class RankingItem {
         this.recipe_title=recipe_title;
     }
 
-    public String getMenuImg(){
-
-        return menu_img;
-    }
+    public String getMenuImg(){ return menu_img; }
     public void setMenuImg(String menu_img){
         this.menu_img=menu_img;
     }
+
+    public String getRecipe_url(){return recipe_url;}
+    public void setRecipe_url(String recipe_url){this.recipe_url=recipe_url;}
 }

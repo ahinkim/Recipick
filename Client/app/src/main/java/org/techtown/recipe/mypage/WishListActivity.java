@@ -1,5 +1,6 @@
 package org.techtown.recipe.mypage;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -65,6 +66,9 @@ public class WishListActivity extends AppCompatActivity {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("accessToken", accessToken);
         headers.put("refreshToken", refreshToken);
+
+        ProgressDialog dialog = ProgressDialog.show(WishListActivity.this, "",
+                "찜 목록을 불러오고 있는 중입니다.", true);
 
         //버튼 세팅
         setContentView(R.layout.activity_favorite);
@@ -211,10 +215,12 @@ public class WishListActivity extends AppCompatActivity {
 
                         items.add(new WishListItem(wishList.optString("rId")
                                 , wishList.optString("recipe_title")
-                                , wishList.optString("menu_img")));
+                                , wishList.optString("menu_img")
+                                ,wishList.optString("recipe_url")));
                     }
                     adapter.setItems(items);
                     adapter.notifyDataSetChanged();
+                    dialog.dismiss();
                 } catch (JSONException e) {
 
                     e.printStackTrace();
@@ -255,10 +261,12 @@ public class WishListActivity extends AppCompatActivity {
                 WishListItem item = adapter.getItem(position);
 
                 String modify_RId = item.getRId();
+                String recipe_url=item.getRecipe_url();
 
                 Intent intent = new Intent(WishListActivity.this, WishRecipeActivity.class);
 
                 intent.putExtra("modify_RId", modify_RId);
+                intent.putExtra("recipe_url",recipe_url);
 
                 startActivity(intent);
                 finish();
