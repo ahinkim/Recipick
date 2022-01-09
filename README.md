@@ -12,10 +12,49 @@
 **논리적인 구조도**
 
 - 시스템 아키텍처
-- 
+ 
 ![image](https://user-images.githubusercontent.com/75368687/148668993-0885a1b7-0e36-4655-a922-dc2120d612ab.png)
 
 - 시스템 구성도
-- 
+ 
 ![image](https://user-images.githubusercontent.com/75368687/148668996-d870b9a1-a93b-4bfe-89bc-7a1bfbc57e36.png)
+
+**주요 기능**
+
+1) 사용자 맞춤 레시피 추천 기능
+
+2) 날씨 레시피 추천 기능
+
+3) 레시피 랭킹 기능
+
+4) 검색 기능
+
+5) 평점 기능
+
+6) 찜 목록 기능
+
+7) 회원 탈퇴
+
+**완성품의 사용 매뉴얼**
+
+ - 전체 usecase
+ 
+![image](https://user-images.githubusercontent.com/75368687/148669120-c6c6f1f7-cf27-4533-89b0-3c9d72da8389.png)
+
+![image](https://user-images.githubusercontent.com/75368687/148669298-12e5b8fa-255e-4d43-8851-400df9f6e219.png)
+
+![image](https://user-images.githubusercontent.com/75368687/148669300-eb6e68c8-dd70-4016-af90-bffcdb606e9b.png)
+
+![image](https://user-images.githubusercontent.com/75368687/148669301-26be77fb-78e7-4869-9869-9e36645821af.png)
+
+![image](https://user-images.githubusercontent.com/75368687/148669321-133497dd-9038-490d-9860-16d360ac7a4a.png)
+
+![image](https://user-images.githubusercontent.com/75368687/148669322-496caf0d-d8cd-42b9-8299-fd9b5441adab.png)
+
+**팀 개요 및 역할분담**
+
+김혜율: 빅데이터 수집, UI디자인, 프론트 설계 및 구현
+김아인: 빅데이터 수집, 추천 알고리즘 설계, 서버API 설계 및 구현
+이경후: 빅데이터 전처리, 추천 알고리즘 설계 및 구현
+남규헌: 빅데이터 수집, 빅데이터 전처리
 
