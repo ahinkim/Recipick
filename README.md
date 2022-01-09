@@ -10,8 +10,10 @@
 **논리적인 구조도**
 
 - 시스템 아키텍처
+- 
 ![image](https://user-images.githubusercontent.com/75368687/148668993-0885a1b7-0e36-4655-a922-dc2120d612ab.png)
 
 - 시스템 구성도
+- 
 ![image](https://user-images.githubusercontent.com/75368687/148668996-d870b9a1-a93b-4bfe-89bc-7a1bfbc57e36.png)
 
