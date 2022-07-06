@@ -20,8 +20,8 @@
 ![image](https://user-images.githubusercontent.com/75368687/148668993-0885a1b7-0e36-4655-a922-dc2120d612ab.png)
 
 - 시스템 구성도
- 
-![image](https://user-images.githubusercontent.com/75368687/148668996-d870b9a1-a93b-4bfe-89bc-7a1bfbc57e36.png)
+
+![image](https://user-images.githubusercontent.com/75368687/177490549-5ecd41a2-a1b4-4a8c-a548-0cf0d056ee13.png)
 
 **주요 기능**
 
