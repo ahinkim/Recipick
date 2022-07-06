@@ -21,7 +21,7 @@
 
 - 시스템 구성도
 
-![image](https://user-images.githubusercontent.com/75368687/177490549-5ecd41a2-a1b4-4a8c-a548-0cf0d056ee13.png)
+![image](https://user-images.githubusercontent.com/75368687/177490894-fe419d9c-45da-4097-bdb8-3838b27a6750.png)
 
 **주요 기능**
 
