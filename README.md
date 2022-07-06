@@ -42,7 +42,7 @@
 **완성품의 사용 매뉴얼**
 
  - 전체 usecase
-![image](https://user-images.githubusercontent.com/75368687/177491583-4f97bc67-3fea-4555-aa75-c2f3a034f06e.png)
+![image](https://user-images.githubusercontent.com/75368687/177491812-308e2cd2-032a-4dc6-b670-6f5d85946d81.png)
 
 ![image](https://user-images.githubusercontent.com/75368687/148669298-12e5b8fa-255e-4d43-8851-400df9f6e219.png)
 
