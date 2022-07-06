@@ -17,7 +17,7 @@
 
 - 시스템 아키텍처
  
-![image](https://user-images.githubusercontent.com/75368687/148668993-0885a1b7-0e36-4655-a922-dc2120d612ab.png)
+![image](https://user-images.githubusercontent.com/75368687/177490987-39789a11-4561-4409-9dd8-3f6cd6c8d707.png)
 
 - 시스템 구성도
 
