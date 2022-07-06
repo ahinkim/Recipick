@@ -43,7 +43,7 @@
 
  - 전체 usecase
  
-![image](https://user-images.githubusercontent.com/75368687/148669120-c6c6f1f7-cf27-4533-89b0-3c9d72da8389.png)
+![image](https://user-images.githubusercontent.com/75368687/177491181-04b2af4c-d577-4f6c-b01c-749d80d9cd53.png)
 
 ![image](https://user-images.githubusercontent.com/75368687/148669298-12e5b8fa-255e-4d43-8851-400df9f6e219.png)
 
