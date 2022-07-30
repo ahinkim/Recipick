@@ -399,17 +399,6 @@ def recipeOrder(request):
             return JsonResponse({"message":"REQUEST ERROR"}, status=421)
 
 
-@csrf_exempt
-def recipeOrder(request):
-    if request.method == 'GET':
-        try:
-            rId = request.GET['rId']
-            query_set = R_order.objects.filter(rId=rId).all()
-            serializer = R_OrderSerializer(query_set, many=True)
-            return JsonResponse({"r_order": serializer.data}, safe=False, status=200)
-        except:
-            return JsonResponse({"message":"REQUEST ERROR"}, status=421)
-
 
 @csrf_exempt
 def search(request):
